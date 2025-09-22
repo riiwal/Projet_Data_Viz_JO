@@ -61,3 +61,12 @@ donnees <- donnees %>%
 
 dtaf <- circo %>%
   left_join(donnees, by = c("codeCirconscription" = "circo"))
+
+
+#On ajuste les variables Voix et Nom 
+dtaf <- dtaf %>%
+  mutate(across(starts_with("Voix"), ~ as.numeric(as.character(.))))
+dtaf <- dtaf %>%
+  mutate(across(starts_with("%"), ~ as.numeric(as.character(.))))
+dtaf <- dtaf %>%
+  mutate(across(starts_with("Nom"), ~ as.factor(as.character(.))))
