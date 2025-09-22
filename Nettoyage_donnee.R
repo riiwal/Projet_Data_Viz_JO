@@ -1,7 +1,15 @@
-#Nettoyage des données 
+library(readxl)
 library(dplyr)
-athletes <- read.csv("athlete_events.csv", header = TRUE, stringsAsFactors=TRUE)
+dta_insee <- read_xlsx("indic-stat-circonscriptions-legislatives-2022.xlsx",sheet = 1, skip = 7)
+summary(dta_insee)
 
-athletes <- athletes %>% filter(Year>1924) %>%
-  mutate(Medal = ifelse(is.na(Medal), "No_medal", Medal))%>% mutate(Medal=as.factor(Medal)) %>% na.omit()
-summary(athletes)
+dta_insee[, -c(1,2)] <- lapply(dta_insee[, -c(1,2)], function(x) {
+  as.numeric(gsub(",", ".", gsub("[^0-9,.-]", "", x))) 
+})
+
+composition <- read_xlsx("circo_composition.xlsx",sheet = "table")
+
+donnees <- composition %>%
+  left_join(dta_insee, by = "circo")
+
+summary(donnees)
