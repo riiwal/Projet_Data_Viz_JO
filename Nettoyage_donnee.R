@@ -1,5 +1,6 @@
 library(readxl)
 library(dplyr)
+library(stringr)
 
 dta_insee <- read_xlsx("indic-stat-circonscriptions-legislatives-2022.xlsx",sheet = 1, skip = 7)
 summary(dta_insee)
@@ -38,3 +39,25 @@ result_2022 %>%
 donnees <- dta_insee %>%
   full_join(result_2022, by = "Nom de la circonscription")
 summary(donnees)
+
+
+#Ajout des données pour faire la carte 
+circo <- st_read("https://static.data.gouv.fr/resources/contours-geographiques-des-circonscriptions-legislatives/20240613-191506/circonscriptions-legislatives-p20.geojson")
+circo <- circo[1:539,] # On prend que la métropole 
+
+# Création d'une clé commune 
+
+donnees$circo <- as.character(donnees$circo) # code de nos données repassé en charactères 
+
+
+#On enlève le 0 en trop dans donnes pour faire matcher les codes 
+donnees <- donnees %>%
+  mutate(
+    circo = paste0(
+      str_sub(circo, 1, 2),   # 2 premiers caractères (département)
+      str_sub(circo, 4)       # tout sauf le 3e caractère (le zéro en trop)
+    )
+  )
+
+dtaf <- circo %>%
+  left_join(donnees, by = c("codeCirconscription" = "circo"))
