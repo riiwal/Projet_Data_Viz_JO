@@ -7,9 +7,7 @@ dta_insee[, -c(1,2)] <- lapply(dta_insee[, -c(1,2)], function(x) {
   as.numeric(gsub(",", ".", gsub("[^0-9,.-]", "", x))) 
 })
 
-composition <- read_xlsx("circo_composition.xlsx",sheet = "table")
+dta_insee[,c(1,2)] <- lapply(dta_insee[,c(1,2)],as.factor)
 
-donnees <- composition %>%
-  left_join(dta_insee, by = "circo")
+summary(dta_insee)
 
-summary(donnees)
