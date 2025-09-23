@@ -1,6 +1,7 @@
 library(readxl)
 library(dplyr)
 library(stringr)
+library(sf)
 
 dta_insee <- read_xlsx("indic-stat-circonscriptions-legislatives-2022.xlsx",sheet = 1, skip = 7)
 summary(dta_insee)
