@@ -73,3 +73,39 @@ ggplot(mon_dataframe) +
   coord_sf(xlim = c(-6, 10), ylim = c(41, 52)) +
   theme_minimal() +
   labs(title = "Circonscriptions par numéro (France métropolitaine)")
+
+names(mon_dataframe)
+
+#Taux d'absentéisme 
+ggplot(mon_dataframe) +
+  geom_sf(aes(fill=`% Abs/Ins`), color = "white") +
+  coord_sf(xlim = c(-6, 10), ylim = c(41, 52)) +
+  theme_minimal() +
+  labs(title = "Taux d'absentéisme")+
+  scale_fill_continuous(low="#bcacd4",high="#18047e")
+
+
+#
+ggplot(mon_dataframe)+
+  geom_point()+
+  aes(x=modtrans_voit,y=`% Voix/Exp7`)+
+  ggtitle("Nb de gens votant Ecologie en fonction du nb de gens utilisant la voiture")
+
+ggplot(mon_dataframe)+
+  geom_point()+
+  aes(x=modtrans_voit,y=`% Voix/Exp5`)+
+  ggtitle("Nb de gens votant Le Pen en fonction du nb de gens utilisant la voiture")
+
+ggplot(mon_dataframe)+
+  geom_point()+
+  aes(x=pop_rur_non_periu,y=`% Voix/Exp5`)+
+  ggtitle("Nb de gens votant Le Pen en fonction de la part de pop étant population rurale ")
+
+ggplot(mon_dataframe)+
+  geom_point()+
+  aes(x=pop_rur_non_periu,y=`% Voix/Exp7`)+
+  ggtitle("Nb de gens votant Jadot en fonction de la part de pop étant population rurale ")
+
+
+
+
