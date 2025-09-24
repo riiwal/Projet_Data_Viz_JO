@@ -71,5 +71,3 @@ dtaf <- dtaf %>%
   mutate(across(starts_with("%"), ~ as.numeric(as.character(.))))
 dtaf <- dtaf %>%
   mutate(across(starts_with("Nom"), ~ as.factor(as.character(.))))
-
-# test push maéva
