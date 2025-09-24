@@ -105,7 +105,8 @@ ggplot(mon_dataframe)+
   geom_point()+
   aes(x=pop_rur_non_periu,y=`% Voix/Exp7`)+
   ggtitle("Nb de gens votant Jadot en fonction de la part de pop étant population rurale ")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
+library(FactoMineR)
 
-
-
+res_pca<-PCA(dtaf[,2:52])

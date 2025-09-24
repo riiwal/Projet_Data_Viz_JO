@@ -71,3 +71,72 @@ dtaf <- dtaf %>%
   mutate(across(starts_with("%"), ~ as.numeric(as.character(.))))
 dtaf <- dtaf %>%
   mutate(across(starts_with("Nom"), ~ as.factor(as.character(.))))
+
+#Ajout de la colonne gagnant 
+ajouter_gagnant <- function(df) {
+  # Colonnes des % Voix/Exp
+  pct_cols <- paste0("% Voix/Exp", c("", 2:12))
+  
+  # Sélectionner les colonnes et convertir en numérique en gérant les NA
+  pct_mat <- as.data.frame(lapply(df[pct_cols], function(col) suppressWarnings(as.numeric(as.character(col)))))
+  
+  # Trouver l'indice du max par ligne (en ignorant les NA)
+  gagnant_index <- apply(pct_mat, 1, function(x) {
+    if (all(is.na(x))) {
+      return(NA_integer_)
+    } else {
+      return(which.max(x))
+    }
+  })
+  
+  # Colonnes des noms
+  nom_cols <- paste0("Nom", c("", 2:12))
+  nom_mat <- as.data.frame(lapply(df[nom_cols], as.character), stringsAsFactors = FALSE)
+  
+  # Récupérer le nom gagnant pour chaque ligne
+  nom_gagnant <- mapply(function(i, row) {
+    if (is.na(i)) return(NA_character_)
+    return(row[[i]])
+  }, gagnant_index, split(nom_mat, seq_len(nrow(nom_mat))), USE.NAMES = FALSE)
+  
+  # Ajouter colonne gagnant
+  df$Gagnant <- nom_gagnant
+  
+  return(df)
+}
+
+dtaf <- ajouter_gagnant(dtaf)
+
+#Renommer les % Voix/Exp
+
+dtaf <- dtaf %>% 
+  rename(Arthaud_exp = `% Voix/Exp`,
+         Roussel_exp = `% Voix/Exp2`,
+         Macron_exp = `% Voix/Exp3`,
+         Lassalle_exp = `% Voix/Exp4`,
+         LePen_exp = `% Voix/Exp5`,
+         Zemmour_exp = `% Voix/Exp6`,
+         Melenchon_exp = `% Voix/Exp7`,
+         Hidalgo_exp = `% Voix/Exp8`,
+         Jadot_exp = `% Voix/Exp9`,
+         Pecresse_exp = `% Voix/Exp10`,
+         Poutou_exp = `% Voix/Exp11`,
+         DupontAignan_exp = `% Voix/Exp12`,
+         
+         
+    
+  )
+
+
+dtaf<- dtaf %>% 
+  rename(Abs_insc = `% Abs/Ins`,
+         Vot_insc = `% Vot/Ins`,
+         Blanc_vote =`% Blancs/Vot`,
+         Nul_vote = `% Nuls/Vot`)
+dtaf <- dtaf[,-c(5,53:59,61,63:64,66:67,69:77,79:84,86:91,93:98,100:105,107:112,114:119,121:126,128:133,135:140,142:147,149:154)]
+
+summary(dtaf)
+
+dtaf <- dtaf %>%
+  mutate(across(c(1, 3, 68), as.factor))
+
