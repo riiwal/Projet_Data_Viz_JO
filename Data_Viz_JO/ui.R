@@ -9,19 +9,30 @@
 
 library(shiny)
 library(bslib)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(scales)
+library(forcats)
+library(tidyverse)
 
-# Define UI for application that draws a histogram
-shinyUI(navbarPage(
-  title = "Présidentielles 2022",
-  tabPanel(
-    title = "Données",
-    navlistPanel(tabPanel(title = "Plot"),
-    tabPanel(title = "Table", ),
-    tabPanel(title = "History"))
-    ,
-    tabPanel(title = "Penguin's life")
-  ),
-  
-  tabPanel(title = "Analyse Descriptive", "some charts"),
-  tabPanel(title = "Visualisations", "some tables")
-))
+
+
+shinyUI(
+  navbarPage(
+    title = "Présidentielles 2022",
+    tabPanel(
+      title = "Données",
+      navlistPanel(
+        tabPanel(title="plot"),
+        tabPanel(title = "Table"),
+        tabPanel(title = "Résultats — Shiny"),
+        tabPanel(title = "Penguin's life")
+      )
+    ),
+    tabPanel(title = "Analyse Descriptive", source("ui/ui_descriptif.R", local = TRUE)$value),
+    tabPanel(title = "Visualisations", "some tables")
+  )
+)
+
