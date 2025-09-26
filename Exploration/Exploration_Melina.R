@@ -6,6 +6,7 @@ library(patchwork)
 library(scales)
 library(forcats)
 ### Les graphiques descriptifs ####
+fnizenfiab
 
 summary(dtaf)
 
