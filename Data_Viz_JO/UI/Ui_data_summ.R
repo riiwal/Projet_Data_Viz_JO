@@ -1,7 +1,7 @@
 library(shiny)
 library(DT)
 
-ui <- fluidPage(
+ui_data <- fluidPage(
   titlePanel("Exploration du dataset dtaf"),
   
   sidebarLayout(
@@ -19,3 +19,7 @@ ui <- fluidPage(
     )
   )
 )
+library(shiny)
+
+
+shinyApp(ui = ui_data, server = server_data)
