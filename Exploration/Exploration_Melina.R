@@ -5,6 +5,7 @@ library(ggplot2)
 library(patchwork)
 library(scales)
 library(forcats)
+library(tidyverse)
 ### Les graphiques descriptifs ####
 fnizenfiab
 
@@ -36,7 +37,7 @@ cols <- c("MACRON"= "#F2C14E", "LE PEN"= "#0D3B66","MÉLENCHON"= "#D7263D")
 # Carte
 ggplot(dtaf) +
   geom_sf(aes(fill = Gagnant), color = "white", size = 0.1) +
-  geom_sf(data = dep, fill = NA, color = "grey25", size = 0.2) +
+  geom_sf(data = dep, fill = NA, color = "white", size = 0.2) +
   scale_fill_manual(values = cols, na.value = "grey85") +
   coord_sf(expand = FALSE) +
   labs(
