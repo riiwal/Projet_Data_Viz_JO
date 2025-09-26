@@ -116,3 +116,7 @@ ggplot(dat_long, aes(
   theme_minimal(base_size = 12) +
   theme(panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank())
+
+
+# heatmap
+
