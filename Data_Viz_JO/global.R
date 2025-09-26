@@ -15,7 +15,6 @@ library(factoextra)
 library(patchwork)
 library(scales)
 library(forcats)
-library(viridis)
 
 # nettoyage des données ---- 
 dta_insee <- read_xlsx("indic-stat-circonscriptions-legislatives-2022.xlsx",sheet = 1, skip = 7)
