@@ -217,3 +217,6 @@ fviz_pca_ind(res.pca,
              palette = "jco",
              legend.title = "Vote majoritaire") +
   ggtitle("ACP - Individus colorés selon le vote majoritaire")
+
+fviz_pca_var(res.pca,repel = TRUE) +
+  ggtitle("ACP - variables")
