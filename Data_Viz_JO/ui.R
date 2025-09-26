@@ -8,11 +8,20 @@
 #
 
 library(shiny)
-library(shinydashboard)
+library(bslib)
 
 # Define UI for application that draws a histogram
-dashboardPage(
-  dashboardHeader(),
-  dashboardSidebar(),
-  dashboardBody()
-)
+shinyUI(navbarPage(
+  title = "Présidentielles 2022",
+  tabPanel(
+    title = "Données",
+    navlistPanel(tabPanel(title = "Plot"),
+    tabPanel(title = "Table", ),
+    tabPanel(title = "History"))
+    ,
+    tabPanel(title = "Penguin's life")
+  ),
+  
+  tabPanel(title = "Analyse Descriptive", "some charts"),
+  tabPanel(title = "Visualisations", "some tables")
+))
