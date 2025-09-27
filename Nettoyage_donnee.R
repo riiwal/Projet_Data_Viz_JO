@@ -31,8 +31,8 @@ result_2022$`Libellé du département` <- gsub(" ", "", result_2022$`Libellé du
 # on créer la colonne qui servira pour faire la jointure
 result_2022 %>% 
   mutate(`Nom de la circonscription` = ifelse(`Code de la circonscription`=="01",
-                                            paste0(`Libellé du département`, "-", "1recirconscription"),
-                                            paste0(paste0(`Libellé du département`, "-", as.numeric(`Code de la circonscription`),"ecirconscription"))))-> result_2022
+                                              paste0(`Libellé du département`, "-", "1recirconscription"),
+                                              paste0(paste0(`Libellé du département`, "-", as.numeric(`Code de la circonscription`),"ecirconscription"))))-> result_2022
 
 
 # on crée le jeu de données d'analyses
@@ -124,7 +124,7 @@ dtaf <- dtaf %>%
          DupontAignan_exp = `% Voix/Exp12`,
          
          
-    
+         
   )
 
 
@@ -140,3 +140,34 @@ summary(dtaf)
 dtaf <- dtaf %>%
   mutate(across(c(1, 3, 68), as.factor))
 
+invalid_geom <- dtaf[!st_is_valid(dtaf), ]
+nrow(invalid_geom)
+dtaf$geometry <- st_make_valid(dtaf$geometry)
+
+table(st_is_valid(dtaf))
+
+
+dtaf$geometry[!st_is_valid(dtaf)] <- st_make_valid(dtaf$geometry[!st_is_valid(dtaf)])
+
+invalid_geom <- dtaf %>% filter(!st_is_valid(geometry))
+invalid_geom$codeCirconscription
+
+
+
+library(rmapshaper)
+geom <- dtaf$geometry[dtaf$codeCirconscription == "4407"]
+geom <- st_make_valid(geom)
+geom <- ms_simplify(geom, keep = 0.1)  # réduire la complexité
+dtaf$geometry[dtaf$codeCirconscription == "4407"] <- geom
+
+
+
+geom <- dtaf$geometry[dtaf$codeCirconscription == "8306"]
+geom <- st_make_valid(geom)
+geom <- ms_simplify(geom, keep = 0.1)  # réduire la complexité
+dtaf$geometry[dtaf$codeCirconscription == "8306"] <- geom
+
+summary(dtaf)
+table(st_is_valid(dtaf))
+
+saveRDS(dtaf,file="Data_Viz_JO/data/dtaf.RDS")
