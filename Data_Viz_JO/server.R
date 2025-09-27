@@ -20,4 +20,5 @@ library(tidyverse)
 
 shinyServer(function(input, output, session) {
   source("server/server_descriptive.R", local = TRUE)
+  source('Server/Server_carte.R',local=TRUE)
 })

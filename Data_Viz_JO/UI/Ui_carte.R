@@ -1,2 +1,6 @@
 library(shiny)
-selectInput()
+tagList(fluidPage(
+  leafletOutput("mymap"),
+  p(),
+  actionButton("recalc", "New points")
+))

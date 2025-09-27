@@ -9,10 +9,10 @@ library(ggiraph)
 library(plotly)
 library(leaflet)
 library(leaflet.extras)
+library(htmltools) 
 
 
-dtaf2 <- st_make_valid(dtaf)
-dtaf$geometry <- st_buffer(dtaf$geometry, 0)
+
 #On créer un subset avec seulement les votes et les circonscription
 top3<-dtaf[,c(3,56:67)] %>% 
   pivot_longer(cols=2:13,
@@ -44,35 +44,6 @@ top3 <- top3 %>%
                            "DupontAignan_exp" = "DupontAignan"))
 
 
-
-ggplot(dtaf) +
-  geom_sf(aes(fill=act_cho), color = "white") +
-  coord_sf(xlim = c(-6, 10), ylim = c(41, 52)) +
-  theme_minimal() +
-  labs(title = "XXX par Circonscriptions")+
-  scale_fill_distiller(palette = "RdYlGn", direction = -1) 
-
-
-p <- ggplot(dtaf) +
-  geom_sf(aes(
-    fill = act_cho,
-    text = paste0(
-      "Circonscription : ",
-      nomDepartement, nomCirconscription,
-      "<br>",
-      "Valeur : ",
-      round(act_cho, 2)
-    )
-  ), color = "white") +
-  coord_sf(xlim = c(-6, 10), ylim = c(41, 52)) +
-  theme_minimal() +
-  labs(title = "XXX par Circonscriptions") +
-  scale_fill_distiller(palette = "Oranges", direction = 1)
-
-ggplotly(p, tooltip = "text")
-
-######################################################
-
 pal <- colorNumeric("Oranges", domain = dtaf$act_cho)
 
 
@@ -81,12 +52,40 @@ labels_top3 <- top3[,c(1,3,4)] %>%
   summarise(top3_label = paste0(candidat, " : ", round(pourcentage, 1), "%", collapse = "<br>"))
 labels_top3 <- as_tibble(labels_top3)
 
-
-# Joindre avec dtaf
 dtaf2 <- dtaf %>%
   left_join(labels_top3, by = "codeCirconscription")
 
-dtaf2 <- st_join(dtaf, labels_top3, join = st_equals)
+
+######################################################
+
+output$mymap <- renderLeaflet({
+  leaflet(dtaf2) %>%
+    addPolygons(
+      fillColor = ~pal(act_cho),
+      fillOpacity = 1,
+      color = "darkgray",
+      weight = 1,
+      # Tooltip avec HTML
+      label = lapply(
+        paste0(
+          dtaf2$nomDepartement, " ", dtaf2$nomCirconscription, ": ", round(dtaf2$act_cho, 2), "%<br>",
+          ifelse(!is.na(dtaf2$top3_label), paste0("Top 3 :<br>", dtaf2$top3_label), "")
+        ),
+        HTML
+      )
+    ) %>% 
+    addTiles(
+      urlTemplate = "", 
+      options = providerTileOptions(minZoom = 5, maxZoom = 11)
+    ) %>% 
+    setMapWidgetStyle(style = list(background = "transparent"))
+  
+})
+#########################################################
+
+# Joindre avec dtaf
+
+
 
 leaflet(dtaf2) %>%
     addPolygons(
@@ -101,31 +100,10 @@ leaflet(dtaf2) %>%
   setMapWidgetStyle(style = list(background="transparent")) #avoir un fond blanc
 
 
-library(leaflet)
-library(htmltools) 
+
 # Garder geometry.x et renommer en geometry
 dtaf2 <- dtaf2 %>%
   select(-geometry.y) %>%
   rename(geometry = geometry.x) %>%
   st_as_sf()  # s'assurer que c'est bien un objet sf
 
-leaflet(dtaf2) %>%
-  addPolygons(
-    fillColor = ~pal(act_cho),
-    fillOpacity = 1,
-    color = "darkgray",
-    weight = 1,
-    # Tooltip avec HTML
-    label = lapply(
-      paste0(
-        dtaf2$nomDepartement, " ", dtaf2$nomCirconscription, ": ", round(dtaf2$act_cho, 2), "%<br>",
-        ifelse(!is.na(dtaf2$top3_label), paste0("Top 3 :<br>", dtaf2$top3_label), "")
-      ),
-      HTML
-    )
-  ) %>% 
-  addTiles(
-    urlTemplate = "", 
-    options = providerTileOptions(minZoom = 5, maxZoom = 11)
-  ) %>% 
-  setMapWidgetStyle(style = list(background = "transparent"))

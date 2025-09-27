@@ -32,7 +32,7 @@ shinyUI(
       )
     ),
     tabPanel(title = "Analyse Descriptive", source("ui/ui_descriptif.R", local = TRUE)$value),
-    tabPanel(title = "Visualisations", "some tables")
+    tabPanel(title = "Riwal", source("UI/Ui_carte.R", local=TRUE)$value)
   )
 )
 
