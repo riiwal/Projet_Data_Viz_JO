@@ -64,7 +64,7 @@ corr <- cor(subdata)
 corrplot(corr, method = "color", type = "upper", tl.col = "black", tl.cex = 0.7,
          col = brewer.pal(n = 8, name = "RdBu"))
 
-# ---- 5. CARTOGRAPHIE ----
+#carte
 # Taux de votes principaux sur la carte
 votes_vars <- c("`% Voix/Ins3`", "`% Voix/Ins5`", "`% Voix/Ins7`", "`% Voix/Ins8`", "`% Voix/Ins9`", "`% Voix/Ins10`", "`% Voix/Ins11`", "`% Voix/Ins12`")
 
@@ -78,7 +78,7 @@ for (v in votes_vars) {
   )
 }
 
-# ---- 6. COMPARAISONS PAR DÉPARTEMENT ----
+# COMPARAISONS PAR DÉPARTEMENT
 dtaf %>%
   st_drop_geometry() %>% 
   group_by(nomDepartement) %>%
@@ -95,7 +95,6 @@ dtaf %>%
   labs(title = "Votes moyens par département")
 
 
-# ---- 7. PROFILS TYPES ----
 # Clustering des circonscriptions
 set.seed(123)
 res_kmeans <- kmeans(scale(subdata), centers = 4, nstart = 25)
@@ -110,3 +109,8 @@ ggplot(dtaf) +
   theme_void() +
   labs(title = "Typologie des circonscriptions (K-means)")
 
+
+#variables trop corrélées
+cor_mat <- cor(dtaf_acp, use = "pairwise.complete.obs")
+library(corrplot)
+corrplot(cor_mat, method = "color", type = "upper", tl.cex = 0.6)
