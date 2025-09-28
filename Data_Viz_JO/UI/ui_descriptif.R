@@ -7,8 +7,8 @@ tagList(
           6,
           card(
             class = "plot-card",
-            card_header("Abstention"),
-            card_body(plotOutput("carteabstention"))
+            card_header("Participation"),
+            card_body(plotOutput("carteparticipation"))
           )
         ),
         column(
@@ -24,7 +24,7 @@ tagList(
           12,
           card(
             card_header("Résultats nationaux (pondérés)"),
-            #plotOutput("histogrammeresultat")
+            plotOutput("histogrammeresultat")
           )
         )
       )

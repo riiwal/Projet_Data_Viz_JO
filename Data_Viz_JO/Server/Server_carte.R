@@ -14,7 +14,7 @@ library(htmltools)
 
 
 #On créer un subset avec seulement les votes et les circonscription
-top3<-dtaf[,c(3,56:67)] %>% 
+top3<-dtaf_loaded[,c(3,56:67)] %>% 
   pivot_longer(cols=2:13,
                names_to = "candidat",
                values_to = "pourcentage")
@@ -52,7 +52,7 @@ labels_top3 <- top3[,c(1,3,4)] %>%
   summarise(top3_label = paste0(candidat, " : ", round(pourcentage, 1), "%", collapse = "<br>"))
 labels_top3 <- as_tibble(labels_top3)
 
-dtaf2 <- dtaf %>%
+dtaf2 <- dtaf_loaded %>%
   left_join(labels_top3, by = "codeCirconscription")
 
 

@@ -24,3 +24,9 @@ library(leaflet.extras)
 library(htmltools) 
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
+
+# Base géo UNIQUE et propre (circonscriptions)
+dtaf_base <- dtaf_loaded %>%
+  st_make_valid() %>%
+  st_transform(2154) %>%
+  mutate(codeCirconscription = as.character(codeCirconscription))
