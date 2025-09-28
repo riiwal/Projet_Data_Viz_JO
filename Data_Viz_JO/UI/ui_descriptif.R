@@ -24,7 +24,7 @@ tagList(
           12,
           card(
             card_header("Résultats nationaux (pondérés)"),
-            plotOutput("histogrammeresultat")
+            #plotOutput("histogrammeresultat")
           )
         )
       )

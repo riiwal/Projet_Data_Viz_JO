@@ -19,6 +19,12 @@ library(tidyverse)
 
 
 shinyServer(function(input, output, session) {
+  output$image <- renderImage( 
+    { 
+      list(src = "image_accueil_urne.png", height = "100%") 
+    }, 
+    deleteFile = FALSE 
+  ) 
   source("server/server_descriptive.R", local = TRUE)
   source('Server/Server_carte.R',local=TRUE)
 })
