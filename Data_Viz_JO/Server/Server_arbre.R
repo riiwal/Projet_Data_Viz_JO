@@ -7,8 +7,7 @@ library(rpart.plot)
 library(sparkline)
 
 # server/Server_arbre.R
-output$tree <- renderPlot({
-  res <- rpart(Gagnant~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,
+res <- rpart(Gagnant~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,
                                                 pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,age_moyen,
                                                 actemp,actcho,inactret,actdip_PEU,actdip_CAP,actdip_BAC,actdip_BAC2,
                                                 actdip_BAC3,actdip_BAC5,actdip_BAC3P,
@@ -17,7 +16,8 @@ output$tree <- renderPlot({
                                                 modtrans_aucun,modtrans_pied,modtrans_velo,modtrans_voit,modtrans_commun,
                                                 acc_ecole,acc_college,acc_lycee,acc_medecin,acc_dentiste,acc_pharmacie,
                                                 tx_pauvrete60_diff,nivvie_median_diff,Gagnant) %>%
-                 st_drop_geometry())
+                st_drop_geometry())
+  output$tree <- renderPlot({
   visTree(res, main = "Vote", width = "100%",height = "600px")
   
   # arbre Jadot

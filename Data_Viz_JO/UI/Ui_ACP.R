@@ -1,3 +1,4 @@
 tagList(
-  plotOutput("PCA")
+  plotOutput("PCA_ind"),
+  plotOutput("PCA_var")
 )
