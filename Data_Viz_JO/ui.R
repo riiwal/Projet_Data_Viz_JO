@@ -41,5 +41,6 @@ shinyUI(navbarPage(
   tabPanel(title = "Analyse Descriptive", source("ui/ui_descriptif.R", local = TRUE)$value),
   tabPanel(title = "Carte", source("UI/Ui_carte.R", local=TRUE)$value),
   tabPanel(title = "ACP", source("UI/Ui_ACP.R", local=TRUE)$value),
-  tabPanel(title = "Arbre", source("UI/Ui_arbre.R", local=TRUE)$value)
+  tabPanel(title = "Arbre", source("UI/Ui_arbre.R", local=TRUE)$value),
+  tabPanel(title = "Heatmap", source("ui/ui_heatmap.R",local = TRUE)$value)
 ))
