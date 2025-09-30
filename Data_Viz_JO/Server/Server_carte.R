@@ -71,7 +71,7 @@ output$mymap <- renderLeaflet({
   )
   
   # Créer la carte Leaflet
-  leaflet(dtaf2) %>%
+  leaflet(dtaf2, options = leafletOptions(maxZoom = 11, minZoom = 5, zoom=5)) %>%
     addTiles() %>%
     addPolygons(
       fillColor = ~pal(dtaf2[[input$select]]),
@@ -100,5 +100,10 @@ output$mymap <- renderLeaflet({
       opacity = 0.7
     ) %>%
     setView(lng = 2.5, lat = 46.5, zoom = 6) %>%
-    clearTiles()
+    clearTiles() %>% 
+    setMaxBounds( lng1 = -5.142222,  
+                  lat1 = 41.333740,  
+                  lng2 = 9.560000,    
+                  lat2 = 51.089062)
+ 
      })

@@ -39,7 +39,7 @@ shinyUI(navbarPage(
   ),
   tabPanel(title = "Données",source("UI/UI_data_summ.R",local = TRUE)$value),
   tabPanel(title = "Analyse Descriptive", source("ui/ui_descriptif.R", local = TRUE)$value),
-  tabPanel(title = "Riwal", source("UI/Ui_carte.R", local=TRUE)$value),
+  tabPanel(title = "Carte", source("UI/Ui_carte.R", local=TRUE)$value),
   tabPanel(title = "ACP", source("UI/Ui_ACP.R", local=TRUE)$value),
   tabPanel(title = "Arbre", source("UI/Ui_arbre.R", local=TRUE)$value)
 ))
