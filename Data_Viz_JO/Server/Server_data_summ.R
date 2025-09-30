@@ -26,7 +26,7 @@ server_data <- function(input, output, session) {
   })
   
   # Résumé des variables
-  output$summary <- renderUI({
+  output$summary <- renderTable({
     df <- dtaf[, theme_vars[[input$theme]], drop = FALSE]
   })
 }

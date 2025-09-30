@@ -28,7 +28,7 @@ shinyUI(navbarPage(
   )), fluidRow(column(
     width = 8,
     offset = 2,
-    h5("Projet réalisé par Riwal Le Moan--Delalande, Maëva Montier et Melina Clément",align= "center"),
+    h5("Projet réalisé par Riwal Le Moan--Delalande, Maéva Montier et Melina Clément",align= "center"),
     br(),
     br()
   )), fluidRow(column(
@@ -37,15 +37,9 @@ shinyUI(navbarPage(
     imageOutput("image", width = "100%", height = "auto")
   )) 
   ),
-  tabPanel(
-    title = "Données",
-    navlistPanel(
-      tabPanel(title = "plot"),
-      tabPanel(title = "Table"),
-      tabPanel(title = "Résultats — Shiny"),
-      tabPanel(title = "Penguin's life")
-    )
-  ),
+  tabPanel(title = "Données",source("UI/UI_data_summ.R",local = TRUE)$value),
   tabPanel(title = "Analyse Descriptive", source("ui/ui_descriptif.R", local = TRUE)$value),
-  tabPanel(title = "Riwal", source("UI/Ui_carte.R", local=TRUE)$value)
+  tabPanel(title = "Riwal", source("UI/Ui_carte.R", local=TRUE)$value),
+  tabPanel(title = "ACP", source("UI/Ui_ACP.R", local=TRUE)$value),
+  tabPanel(title = "Arbre", source("UI/Ui_arbre.R", local=TRUE)$value)
 ))

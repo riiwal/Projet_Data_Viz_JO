@@ -1,25 +1,32 @@
 library(shiny)
 library(DT)
 
-ui_data <- fluidPage(
+# navlistPanel(
+#   tabPanel(title = "plot"),
+#   tabPanel(title = "Table"),
+#   tabPanel(title = "Résultats — Shiny"),
+#   tabPanel(title = "Penguin's life")
+# )
+
+fluidPage(
   titlePanel("Exploration du dataset dtaf"),
-  
+
   sidebarLayout(
     sidebarPanel(
-      selectInput("theme", "Choisissez un thème :", 
+      selectInput("theme", "Choisissez un thème pour le résumé :",
                   choices = c("Démographie", "Activité","Education","CSP","Menages", "Logement", "Transport", "Accès", "Economie", "Votes"),
                   selected = "Démographie")
     ),
-    
+
     mainPanel(
       tabsetPanel(
         tabPanel("Tableau", DTOutput("table")),
-        tabPanel("Résumé", htmlOutput("summary"))
+        tabPanel("Résumé", tableOutput("summary"))
       )
     )
   )
 )
-library(shiny)
+#library(shiny)
 
 
-shinyApp(ui = ui_data, server = server_data)
+#shinyApp(ui = ui_data, server = server_data)
