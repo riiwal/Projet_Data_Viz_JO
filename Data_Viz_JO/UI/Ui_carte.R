@@ -2,7 +2,7 @@ library(shiny)
 tagList(fluidPage(fluidRow(column(
   width = 12,
   offset = 1,
-  h1("Carte de Riwal", align = "center")
+  h1("Carte ", align = "center")
 )), fluidRow(
   column(
     3,
@@ -11,34 +11,33 @@ tagList(fluidPage(fluidRow(column(
       "Choisissez une variable à afficher sur la carte :",
       choices = list(
         "Population" = list(
-          "Population pôles AAV" = "pop_pole_aav",
-          "Population couronnes AAV" = "pop_cour_aav",
-          "Population hors AAV" = "pop_horsaav",
-          "Population urbaine" = "pop_urb",
-          "Population rurale périurbaine" = "pop_rur_periu",
-          "Population rurale non périurbaine" = "pop_rur_non_periu",
-          "Âge moyen" = "age_moyen"
+          "% de Population pôles AAV" = "pop_pole_aav",
+          "% de Population couronnes AAV" = "pop_cour_aav",
+          "% de Population hors AAV" = "pop_horsaav",
+          "% de Population urbaine" = "pop_urb",
+          "% de Population rurale périurbaine" = "pop_rur_periu",
+          "% de Population rurale non périurbaine" = "pop_rur_non_periu"
         ),
         "Emploi et diplômes" = list(
-          "Actifs en emploi" = "actemp",
-          "Chômage" = "actcho",
-          "Inactifs retraités" = "inactret",
-          "Diplôme < CAP" = "actdip_PEU",
-          "CAP/BEP" = "actdip_CAP",
-          "Baccalauréat" = "actdip_BAC",
-          "Bac+2" = "actdip_BAC2",
-          "Bac+3" = "actdip_BAC3",
-          "Bac+5" = "actdip_BAC5",
-          "Bac+3 et plus" = "actdip_BAC3P"
+          "% d'Actifs en emploi" = "actemp",
+          "% de Chômeurs" = "actcho",
+          "% d'Inactifs retraités" = "inactret",
+          "% de Diplômé < CAP" = "actdip_PEU",
+          "% de CAP/BEP" = "actdip_CAP",
+          "% de Diplomé du Baccalauréat" = "actdip_BAC",
+          "% de Diplomé d'un Bac+2" = "actdip_BAC2",
+          "% de Diplomé d'un Bac+3" = "actdip_BAC3",
+          "% de Diplomé d'un Bac+5" = "actdip_BAC5"
+          
         ),
         "Professions" = list(
-          "Agriculteurs" = "act_agr",
-          "Artisans/commerçants" = "act_art",
-          "Cadres" = "act_cad",
-          "Professions intermédiaires" = "act_int",
-          "Employés" = "act_emp",
-          "Ouvriers" = "act_ouv",
-          "Chômeurs" = "act_cho"
+          "% d'Agriculteurs" = "act_agr",
+          "% d'Artisans/commerçants" = "act_art",
+          "% de Cadres" = "act_cad",
+          "% de Professions intermédiaires" = "act_int",
+          "% d'Employés" = "act_emp",
+          "% d'Ouvriers" = "act_ouv",
+          "% de Chômeurs" = "act_cho"
         ),
         "Logement" = list(
           "% Propriétaires" = "proprio",
@@ -46,12 +45,12 @@ tagList(fluidPage(fluidRow(column(
           "Mode chauffage : fioul" = "mfuel"
         ),
         "Ménages" = list(
-          "Ménages seuls" = "men_seul",
-          "Couples avec enfants" = "men_coupae",
-          "Couples sans enfants" = "men_coupse",
-          "Familles monoparentales" = "men_monop"
+          "% de Ménages seuls" = "men_seul",
+          "% de Couples avec enfants" = "men_coupae",
+          "% de Couples sans enfants" = "men_coupse",
+          "% de Familles monoparentales" = "men_monop"
         ),
-        "Transport" = list(
+        "Transport majoritairement utilisé pour aller au travail" = list(
           "Transport : aucun" = "modtrans_aucun",
           "Transport : à pied" = "modtrans_pied",
           "Transport : vélo" = "modtrans_velo",
@@ -63,7 +62,7 @@ tagList(fluidPage(fluidRow(column(
           "Taux pauvreté (60%)" = "tx_pauvrete60_diff",
           "Niveau de vie médian" = "nivvie_median_diff"
         ),
-        "Accès aux services" = list(
+        "Accès aux services sur la commune de résidence" = list(
           "Accès école" = "acc_ecole",
           "Accès collège" = "acc_college",
           "Accès lycée" = "acc_lycee",
