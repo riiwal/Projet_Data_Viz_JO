@@ -1,3 +1,3 @@
 tagList(
-  plotOutput("tree")
+  visNetworkOutput("tree")
 )
