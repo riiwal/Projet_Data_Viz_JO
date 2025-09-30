@@ -21,7 +21,9 @@ library("ggrepel")
 library(plotly)
 library(leaflet)
 library(leaflet.extras)
-library(htmltools) 
+library(htmltools)
+library(visNetwork)
+library(heatmaply)
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
 
