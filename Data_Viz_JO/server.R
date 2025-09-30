@@ -29,4 +29,5 @@ shinyServer(function(input, output, session) {
   source('Server/Server_carte.R',local=TRUE)
   source("Server/Server_ACP.R",local = TRUE)
   source("Server/Server_arbre.R",local = TRUE)
+  source("server/server_heatmap.R",local = TRUE)
 })

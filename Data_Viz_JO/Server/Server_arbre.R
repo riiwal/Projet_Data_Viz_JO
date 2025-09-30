@@ -5,6 +5,7 @@ library(dplyr)
 library(visNetwork)
 library(rpart.plot)
 library(sparkline)
+library(shinyWidgets)
 
 # server/Server_arbre.R
 res <- rpart(Gagnant~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,
@@ -17,9 +18,13 @@ res <- rpart(Gagnant~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_
                                                 acc_ecole,acc_college,acc_lycee,acc_medecin,acc_dentiste,acc_pharmacie,
                                                 tx_pauvrete60_diff,nivvie_median_diff,Gagnant) %>%
                 st_drop_geometry())
-  output$tree <- renderPlot({
-  visTree(res, main = "Vote", width = "100%",height = "600px")
-  
+output$tree <- renderVisNetwork({
+  visTree(res, main = "Vote", width = "100%", height = "600px")
+}) 
+
+  # output$tree <- visTreeModuleServer({
+  # visTree(res, main = "Vote", width = "100%",height = "600px")
+  # 
   # arbre Jadot
   
   # res_jadot <- rpart(Jadot_exp~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,
@@ -35,6 +40,3 @@ res <- rpart(Gagnant~., data = dtaf %>%select(Inscrit_22,pop_légal_19,pop_pole_
   #visTree(res_jadot, main = "Vote", width = "100%",height = "600px")
   
   # renommer variables + ajuster ecriture
-  
-}
-)
