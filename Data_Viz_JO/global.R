@@ -24,6 +24,7 @@ library(leaflet.extras)
 library(htmltools)
 library(visNetwork)
 library(heatmaply)
+library(png)
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
 
