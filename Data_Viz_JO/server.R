@@ -65,7 +65,7 @@ shinyServer(function(input, output, session) {
          cex = 1.1, adj = c(0, .5))
   }, bg = "black")
   
-  
+  source("server/Server_data_summ.R",local = TRUE)
   #source("server/server_descriptive.R", local = TRUE)
   #source('Server/Server_carte.R',local=TRUE)
   #source("Server/Server_ACP.R",local = TRUE)
