@@ -4,7 +4,7 @@ library(dplyr)
 library(stargazer)
 library(summarytools)
 
-server_data <- function(input, output, session) {
+
   # création des thèmes pour l'affichage des variables sélectionnées dans le summary
   theme_vars <- list(
     "Démographie" = c("Inscrit_22","pop_légal_19","pop_pole_aav","pop_cour_aav","pop_horsaav","pop_urb","pop_rur_periu","pop_rur_non_periu","age_moyen"),
@@ -20,6 +20,7 @@ server_data <- function(input, output, session) {
                 "Melenchon_exp","Hidalgo_exp","Jadot_exp","Pecresse_exp","Poutou_exp","DupontAignan_exp","Gagnat")
   )
   
+  
   # Table affichée
   output$table <- renderDT({
     DT::datatable(dtaf, options = list(pageLength = 10))
@@ -27,7 +28,6 @@ server_data <- function(input, output, session) {
   
   # Résumé des variables
   output$summary <- renderTable({
-    df <- dtaf[, theme_vars[[input$theme]], drop = FALSE]
+    summary(dtaf[, theme_vars[[input$theme]], drop = FALSE])
   })
-}
 
