@@ -1,5 +1,4 @@
 tagList(
-  # ---- Style léger et cohérent ----
   tags$head(tags$style(HTML("
     .section-title { text-align:center; margin: 28px 0 16px 0; font-weight:700; }
     .block-space   { margin-bottom: 28px; }         /* espace sous chaque bloc de graphs */
@@ -8,13 +7,9 @@ tagList(
   "))),
   
   navset_card_tab(
-    
-    # ===== Résultats des élections =====
     nav_panel(
       title = "Résultats des élections",
-      
       column(width = 10, offset = 1,
-             
              div(class = "block-space",
                  fluidRow(
                    column(
@@ -36,14 +31,10 @@ tagList(
              )
       )
     ),
-    
-    # ===== Analyse Socio-Démographique =====
     nav_panel(
       title = "Analyse Socio-Démographique",
       
       column(width = 10, offset = 1,
-             
-             # ---- Habitat & AAV ----
              h2(class = "section-title", "Habitat & ancrage territorial"),
              div(class = "block-space",
                  fluidRow(
@@ -57,8 +48,6 @@ tagList(
                    )
                  )
              ),
-             
-             # ---- Diplômes & CSP ----
              h2(class = "section-title", "Structure sociale & diplômes"),
              div(class = "block-space",
                  fluidRow(
@@ -72,8 +61,6 @@ tagList(
                    )
                  )
              ),
-             
-             # ---- Ménages & Mobilité ----
              h2(class = "section-title", "Modes de vie & mobilités"),
              div(class = "block-space",
                  fluidRow(
@@ -87,8 +74,6 @@ tagList(
                    )
                  )
              ),
-             
-             # ---- Accès & Logement ----
              h2(class = "section-title", "Conditions de vie & accès aux services"),
              div(class = "block-space",
                  fluidRow(
