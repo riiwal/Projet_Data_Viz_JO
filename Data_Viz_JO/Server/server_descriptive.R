@@ -2,33 +2,74 @@
 output$carteparticipation <- renderPlot({
   ggplot(dtaf_base) +
     geom_sf(aes(fill = Vot_insc),
-            color = "white", size = 0.2) +   
-    scale_fill_viridis_c(name = "Participation (%)", option = "viridis") +
+            color = "white",
+            size = 0.2) +
+    scale_fill_viridis_c(name = "Participation (%)",
+                         option = "viridis",
+                         direction = -1) +
     coord_sf(expand = FALSE) +
     theme_minimal(base_size = 12) +
-    theme(panel.grid = element_blank(),
-          panel.background = element_blank(),
-          axis.text = element_blank(),
-          axis.ticks = element_blank())
+    labs(title = "Participation par circonscription", x = NULL, y = NULL) +
+    theme(
+      panel.grid = element_blank(),
+      panel.background = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      plot.title.position = "plot",
+      plot.title  = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      plot.margin = margin(
+        t = 12,
+        r = 20,
+        b = 10,
+        l = 24
+      )
+    )
 })
 
 # ===== B) Carte des gagnants (par circonscription) ===========================
 output$cartegagnant <- renderPlot({
-  cols <- c("MACRON"="#F2C14E","LE PEN"="#0D3B66","MÉLENCHON"="#D7263D")
+  cols <- c(
+    "MACRON" = "#F2C14E",
+    "LE PEN" = "#0D3B66",
+    "MÉLENCHON" = "#D7263D"
+  )
   
-  ggplot(
-    dtaf_base %>%
-      mutate(Gagnant = factor(Gagnant, levels = c("MACRON","LE PEN","MÉLENCHON")))
-  ) +
-    geom_sf(aes(fill = Gagnant),
-            color = "white", size = 0.2) +
-    scale_fill_manual(values = cols, na.value = "grey85", drop = FALSE, name = "Gagnant") +
+  ggplot(dtaf_base %>%
+           mutate(Gagnant = factor(
+             Gagnant, levels = c("MACRON", "LE PEN", "MÉLENCHON")
+           ))) +
+    geom_sf(aes(fill = Gagnant), color = "white", size = 0.2) +
+    scale_fill_manual(
+      values = cols,
+      na.value = "grey85",
+      drop = FALSE,
+      name = "Gagnant"
+    ) +
     coord_sf(expand = FALSE) +
     theme_minimal(base_size = 12) +
-    theme(panel.grid = element_blank(),
-          panel.background = element_blank(),
-          axis.text = element_blank(),
-          axis.ticks = element_blank())
+    labs(title = "Candidat gagnant par circonscription", x = NULL, y = NULL) +
+    theme(
+      panel.grid = element_blank(),
+      panel.background = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      plot.title.position = "plot",
+      plot.title  = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      plot.margin = margin(
+        t = 12,
+        r = 20,
+        b = 10,
+        l = 24
+      )
+    )
 })
 
 # ===== C) Histogramme national pondéré par candidat ==========================
@@ -60,10 +101,12 @@ output$histogrammeresultat <- renderPlot({
   
   nat_long <- dtaf_sum %>%
     pivot_longer(cols = all_of(unname(cand_map)),
-                 names_to = "var", values_to = "pct_exp") %>%
+                 names_to = "var",
+                 values_to = "pct_exp") %>%
     mutate(votes_cand = exprimes * (pct_exp / 100)) %>%
     group_by(var) %>%
-    summarise(votes = sum(votes_cand, na.rm = TRUE), .groups = "drop") %>%
+    summarise(votes = sum(votes_cand, na.rm = TRUE),
+              .groups = "drop") %>%
     mutate(share = votes / sum(votes),
            candidat = names(cand_map)[match(var, unname(cand_map))]) %>%
     arrange(desc(share)) %>%
@@ -78,7 +121,7 @@ output$histogrammeresultat <- renderPlot({
     "Yannick\nJadot"        = "#6DA34D",
     "Jean\nLassalle"        = "#7D2941",
     "Fabien\nRoussel"       = "#E64A19",
-    "Nicolas\nDupont-Aignan"= "#7A7B86",
+    "Nicolas\nDupont-Aignan" = "#7A7B86",
     "Anne\nHidalgo"         = "#D97B8B",
     "Philippe\nPoutou"      = "#8A2F2A",
     "Nathalie\nArthaud"     = "#6E3E3B"
@@ -86,17 +129,443 @@ output$histogrammeresultat <- renderPlot({
   
   ggplot(nat_long, aes(x = candidat, y = share, fill = candidat)) +
     geom_col(width = 0.85) +
-    geom_text(aes(label = percent(share, accuracy = 0.01)),
-              vjust = -0.3, size = 3.8, fontface = "bold") +
-    scale_y_continuous(labels = label_percent(accuracy = 1),
-                       expand = expansion(mult = c(0, 0.08))) +
+    geom_text(
+      aes(label = percent(share, accuracy = 0.01)),
+      vjust = -0.3,
+      size = 3.8,
+      fontface = "bold"
+    ) +
+    scale_y_continuous(labels = label_percent(accuracy = 1), expand = expansion(mult = c(0, 0.08))) +
     scale_fill_manual(values = cols_bar, guide = "none") +
-    labs(x = NULL, y = NULL) +
+    labs(title = "Résultat des élections présidentielles au 1er tour", x = NULL, y = NULL) +
     theme_minimal(base_size = 13) +
     theme(
       panel.grid.major.x = element_blank(),
       panel.grid.minor   = element_blank(),
-      axis.text.x        = element_text(lineheight = 0.95, margin = margin(t = 6)),
-      plot.margin        = margin(10, 20, 20, 10)
+      axis.text.x        = element_text(
+        size = 11,
+        face = "bold",
+        lineheight = 0.95,
+        margin = margin(t = 6)
+      ),
+      plot.margin = margin(
+        t = 14,
+        r = 18,
+        b = 12,
+        l = 28
+      ),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      )
+    )
+})
+
+
+dtaf_histo <- st_drop_geometry(dtaf_base)
+output$histogrammehabitat <- renderPlot({
+  cols <- c("pop_urb", "pop_rur_periu", "pop_rur_non_periu")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>%
+    add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "pop_urb"            = "Urbain",
+        "pop_rur_periu"      = "Rural périurbain",
+        "pop_rur_non_periu"  = "Rural non périurbain"
+      )
+    ) %>%
+    arrange(desc(share)) %>%
+    mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = 0.7) +
+    geom_text(aes(label = percent(share, accuracy = 0.1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Répartition par type d’espace", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor   = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$histoAAV <- renderPlot ({
+  dtaf_histo <- st_drop_geometry(dtaf_base)
+  cols <- c("pop_pole_aav", "pop_cour_aav", "pop_horsaav")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>%
+    add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "pop_pole_aav" = "Pôle AAV",
+        "pop_cour_aav" = "Couronne AAV",
+        "pop_horsaav"  = "Hors AAV"
+      )
+    ) %>%
+    arrange(desc(share)) %>%
+    mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = 0.7) +
+    geom_text(aes(label = percent(share, accuracy = 0.1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Répartition par aire d’attraction (AAV)", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor   = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_diplomes <- renderPlot({
+  dtaf_histo <- st_drop_geometry(dtaf_base)
+  cols <- c(
+    "actdip_PEU",
+    "actdip_CAP",
+    "actdip_BAC",
+    "actdip_BAC2",
+    "actdip_BAC3",
+    "actdip_BAC5"
+  )
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "actdip_PEU" = "Sans diplôme",
+        "actdip_CAP" = "Cap/Bep",
+        "actdip_BAC" = "BAC",
+        "actdip_BAC2" = "BAC+2",
+        "actdip_BAC3" = "BAC+3",
+        "actdip_BAC5" = "BAC+5"
+      )
+    ) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Niveaux de diplôme", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 11, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_csp <- renderPlot({
+  cols <- c("act_agr",
+            "act_art",
+            "act_cad",
+            "act_int",
+            "act_emp",
+            "act_ouv",
+            "act_cho")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "act_agr" = "Agriculteurs",
+        "act_art" = "Artisans/Com.",
+        "act_cad" = "Cadres",
+        "act_int" = "Intermédiaires",
+        "act_emp" = "Employés",
+        "act_ouv" = "Ouvriers",
+        "act_cho" = "Chômeurs"
+      )
+    ) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Catégories socio-professionnelles", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 9, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_menages <- renderPlot({
+  cols <- c("men_seul", "men_coupae", "men_coupse", "men_monop")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "men_seul" = "Personnes \nseules",
+        "men_coupae" = "Couples \navec enfants",
+        "men_coupse" = "Couples \nsans enfants",
+        "men_monop" = "Familles \nmonoparentales"
+      )
+    ) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Types de ménages", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_mobilites <- renderPlot({
+  cols <- c(
+    "modtrans_aucun",
+    "modtrans_pied",
+    "modtrans_velo",
+    "modtrans_moto",
+    "modtrans_voit",
+    "modtrans_commun"
+  )
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "modtrans_aucun" = "Aucun",
+        "modtrans_pied" = "À pied",
+        "modtrans_velo" = "Vélo",
+        "modtrans_moto" = "Deux-roues",
+        "modtrans_voit" = "Voiture",
+        "modtrans_commun" = "Transports \nen commun"
+      )
+    ) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Transport domicile-travail principal", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 20,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_logement <- renderPlot({
+  cols <- c("proprio", "locatai")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(label = recode(cat, "proprio" = "Propriétaires", "locatai" =
+                            "Locataires")) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Statut d’occupation logement", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 17,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_acc_education <- renderPlot({
+  cols <- c("acc_ecole", "acc_college", "acc_lycee")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(label = recode(
+      cat,
+      "acc_ecole" = "École",
+      "acc_college" = "Collège",
+      "acc_lycee" = "Lycée"
+    )) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Accessibilité à l’éducation", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 17,
+        face = "bold"
+      ),
+      legend.position = "none"
+    )
+})
+
+output$bar_acc_soins <- renderPlot({
+  cols <- c("acc_medecin", "acc_dentiste", "acc_pharmacie")
+  
+  long <- dtaf_histo %>%
+    select(all_of(cols)) %>% add_column(weight = dtaf_histo$pop_légal_19) %>%
+    pivot_longer(-weight, names_to = "cat", values_to = "pct") %>%
+    group_by(cat) %>%
+    summarise(
+      share = sum(pct / 100 * weight, na.rm = TRUE) / sum(weight, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      label = recode(
+        cat,
+        "acc_medecin" = "Médecin",
+        "acc_dentiste" = "Dentiste",
+        "acc_pharmacie" = "Pharmacie"
+      )
+    ) %>%
+    arrange(desc(share)) %>% mutate(label = factor(label, levels = label))
+  
+  ggplot(long, aes(x = label, y = share, fill = label)) +
+    geom_col(width = .7) +
+    geom_text(aes(label = percent(share, accuracy = .1)),
+              vjust = -0.3,
+              fontface = "bold") +
+    scale_y_continuous(labels = label_percent(), expand = expansion(mult = c(0, .08))) +
+    labs(title = "Accessibilité aux soins", x = NULL, y = NULL) +
+    theme_minimal(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 12, face = "bold"),
+      plot.title = element_text(
+        hjust = 0.5,
+        size = 17,
+        face = "bold"
+      ),
+      legend.position = "none"
     )
 })
