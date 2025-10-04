@@ -6,7 +6,7 @@ tagList(
       "Démographie"              = "demo",
       "Activité / emploi"        = "activ",
       "Diplômes"                 = "dipl",
-      "Catégories socio-pro"     = "csp",
+      "Catégories socio-professionnelle"     = "csp",
       "Logement / énergie"       = "logt",
       "Ménages"                  = "men",
       "Mobilités"                = "mob",
@@ -14,5 +14,5 @@ tagList(
       "Accès aux services"       = "acc"
     ),
     selected = c("demo","activ","dipl","csp","logt","men","mob","nivvie","acc")
-  ),  plotlyOutput("heatmapcorr", height = 700))
+  ),  plotlyOutput("heatmapcorr", height = 500))
   
