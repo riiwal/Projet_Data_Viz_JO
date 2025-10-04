@@ -65,7 +65,8 @@ output$mymap <- renderLeaflet({
       round(dtaf2[[input$select]], 2), "%<br>",
       ifelse(!is.na(dtaf2$top3_label), 
              paste0("<br><b>Top 3 :</b><br>", dtaf2$top3_label), 
-             "")
+             ""), "<br>", "<br>",
+      "<b>Abstention : </b>", round(dtaf2$Abs_insc, 2), "%<br>"
     ),
     HTML
   )
