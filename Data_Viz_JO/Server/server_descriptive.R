@@ -1,4 +1,4 @@
-# ===== A) Carte de participation (par circonscription) =======================
+# Carte de participation
 output$carteparticipation <- renderPlot({
   ggplot(dtaf_base) +
     geom_sf(aes(fill = Vot_insc),
@@ -30,7 +30,7 @@ output$carteparticipation <- renderPlot({
     )
 })
 
-# ===== B) Carte des gagnants (par circonscription) ===========================
+# Carte des gagnants
 output$cartegagnant <- renderPlot({
   cols <- c(
     "MACRON" = "#F2C14E",
@@ -72,7 +72,7 @@ output$cartegagnant <- renderPlot({
     )
 })
 
-# ===== C) Histogramme national pondéré par candidat ==========================
+# Histogramme national pondéré par candidat
 output$histogrammeresultat <- renderPlot({
   cand_map <- c(
     "Emmanuel\nMacron"       = "Macron_exp",
@@ -164,6 +164,8 @@ output$histogrammeresultat <- renderPlot({
 
 
 dtaf_histo <- st_drop_geometry(dtaf_base)
+
+# Histogramme du milieu d'habitation des français
 output$histogrammehabitat <- renderPlot({
   cols <- c("pop_urb", "pop_rur_periu", "pop_rur_non_periu")
   
@@ -208,8 +210,8 @@ output$histogrammehabitat <- renderPlot({
     )
 })
 
+# Histogramme des AAV des français
 output$histoAAV <- renderPlot ({
-  dtaf_histo <- st_drop_geometry(dtaf_base)
   cols <- c("pop_pole_aav", "pop_cour_aav", "pop_horsaav")
   
   long <- dtaf_histo %>%
@@ -253,8 +255,8 @@ output$histoAAV <- renderPlot ({
     )
 })
 
+# Histogramme des études des français
 output$bar_diplomes <- renderPlot({
-  dtaf_histo <- st_drop_geometry(dtaf_base)
   cols <- c(
     "actdip_PEU",
     "actdip_CAP",
@@ -305,6 +307,7 @@ output$bar_diplomes <- renderPlot({
     )
 })
 
+# Histogramme des CSP des français
 output$bar_csp <- renderPlot({
   cols <- c("act_agr",
             "act_art",
@@ -357,6 +360,7 @@ output$bar_csp <- renderPlot({
     )
 })
 
+# Histogramme des ménages
 output$bar_menages <- renderPlot({
   cols <- c("men_seul", "men_coupae", "men_coupse", "men_monop")
   
@@ -400,6 +404,7 @@ output$bar_menages <- renderPlot({
     )
 })
 
+# Histogramme des mobilités travail maison des français
 output$bar_mobilites <- renderPlot({
   cols <- c(
     "modtrans_aucun",
@@ -452,6 +457,7 @@ output$bar_mobilites <- renderPlot({
     )
 })
 
+# Histogramme des propriétaires et locatires 
 output$bar_logement <- renderPlot({
   cols <- c("proprio", "locatai")
   
@@ -487,6 +493,8 @@ output$bar_logement <- renderPlot({
       legend.position = "none"
     )
 })
+
+# Histogramme de l'accès à l'éducation 
 
 output$bar_acc_education <- renderPlot({
   cols <- c("acc_ecole", "acc_college", "acc_lycee")
@@ -527,6 +535,7 @@ output$bar_acc_education <- renderPlot({
       legend.position = "none"
     )
 })
+# Histogramme de l'accès aux soins
 
 output$bar_acc_soins <- renderPlot({
   cols <- c("acc_medecin", "acc_dentiste", "acc_pharmacie")
