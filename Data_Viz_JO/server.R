@@ -20,7 +20,7 @@ library(tidyverse)
 
 shinyServer(function(input, output, session) {
   output$image_fond_accueil <- renderPlot({
-    img <- readPNG(file.path("image_accueil_urne.png"))
+    img <- readPNG(file.path("image_urne_fond.png"))
     
     # Plein écran
     op <- par(mar = c(0,0,0,0), xaxs = "i", yaxs = "i"); on.exit(par(op), add = TRUE)
@@ -66,9 +66,9 @@ shinyServer(function(input, output, session) {
   }, bg = "black")
   
   source("server/Server_data_summ.R",local = TRUE)
-  #source("server/server_descriptive.R", local = TRUE)
+  source("server/server_descriptive.R", local = TRUE)
   source('Server/Server_carte.R',local=TRUE)
-  #source("Server/Server_ACP.R",local = TRUE)
-  #source("Server/Server_arbre.R",local = TRUE)
-  #source("server/server_heatmap.R",local = TRUE)
+  source("Server/Server_ACP.R",local = TRUE)
+  source("Server/Server_arbre.R",local = TRUE)
+  source("server/server_heatmap.R",local = TRUE)
 })
