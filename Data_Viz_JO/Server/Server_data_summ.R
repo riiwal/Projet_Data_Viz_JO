@@ -19,7 +19,7 @@ library(summarytools)
   #   "Votes" = c("Abs_insc","Vot_insc","Blanc_vote","Nul_vote","Arthaud_exp","Roussel_exp","Macron_exp","Lassalle_exp","LePen_exp","Zemmour_exp",
   #               "Melenchon_exp","Hidalgo_exp","Jadot_exp","Pecresse_exp","Poutou_exp","DupontAignan_exp","Gagnant")
   # )
-dtaf_dt <- dtaf %>%
+dtaf_loaded_dt <- dtaf_loaded %>%
   st_drop_geometry() %>%
   rename(
     "Code du département" = codeDepartement,
@@ -92,19 +92,19 @@ dtaf_dt <- dtaf %>%
     "Votes exprimés pour Dupont-Aignan" = DupontAignan_exp
   )
 
-  # dtaf_summary <- dtaf %>%
+  # dtaf_loaded_summary <- dtaf_loaded %>%
   #   st_drop_geometry()
-  # names(dtaf_summary) <- label_variable_df[names(dtaf_summary)]
+  # names(dtaf_loaded_summary) <- label_variable_df[names(dtaf_loaded_summary)]
   # Table affichée
   output$table <- renderDT({
-    DT::datatable(dtaf_dt, options = list(pageLength = 10))
+    DT::datatable(dtaf_loaded_dt, options = list(pageLength = 10))
   })
   
   # Résumé des variables
   library(stargazer)
   
   output$summary <- renderUI({
-    df <- as.data.frame(summary(dtaf_dt[, input$select_summary, drop = FALSE]))
+    df <- as.data.frame(summary(dtaf_loaded_dt[, input$select_summary, drop = FALSE]))
     HTML(
       stargazer(df, type = "html", summary = FALSE, title = "Résumé statistique")
     )

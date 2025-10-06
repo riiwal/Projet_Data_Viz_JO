@@ -235,3 +235,4 @@ summary(dtaf)
 
 #Sauvegarde des données au format RDS
 saveRDS(dtaf, file = "Data_Viz_JO/data/dtaf.RDS")
+
