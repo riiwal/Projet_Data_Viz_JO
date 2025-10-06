@@ -30,7 +30,7 @@ label_variable <- c(
 )
 
 # Sélection et renommage des colonnes
-dtaf_tree <- dtaf %>%
+dtaf_loaded_tree <- dtaf_loaded %>%
   select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,
          age_moyen,actemp,actcho,inactret,actdip_PEU,actdip_CAP,actdip_BAC,actdip_BAC2,actdip_BAC3,actdip_BAC5,
          actdip_BAC3P,act_agr,act_art,act_cad,act_int,act_emp,act_ouv,act_cho,men_seul,men_coupae,men_coupse,
@@ -40,10 +40,10 @@ dtaf_tree <- dtaf %>%
   st_drop_geometry()
 
 # Renommer les colonnes avec les labels
-names(dtaf_tree) <- label_variable[names(dtaf_tree)]
+names(dtaf_loaded_tree) <- label_variable[names(dtaf_loaded_tree)]
 
 # Construire l’arbre
-res <- rpart(`Vote majoritaire` ~ ., data = dtaf_tree)
+res <- rpart(`Vote majoritaire` ~ ., data = dtaf_loaded_tree)
 
 output$tree <- renderVisNetwork({
   visTree(res, main = "Vote", width = "100%", height = "100vh")
@@ -53,7 +53,7 @@ output$tree <- renderVisNetwork({
 output$tree_cand <- renderVisNetwork({
   
   #arbre candidat
-  dtaf_tree_cand <- dtaf %>%
+  dtaf_loaded_tree_cand <- dtaf_loaded %>%
     select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,
            age_moyen,actemp,actcho,inactret,actdip_PEU,actdip_CAP,actdip_BAC,actdip_BAC2,actdip_BAC3,actdip_BAC5,
            actdip_BAC3P,act_agr,act_art,act_cad,act_int,act_emp,act_ouv,act_cho,men_seul,men_coupae,men_coupse,
@@ -63,11 +63,11 @@ output$tree_cand <- renderVisNetwork({
     st_drop_geometry()
   
   # Renommer les colonnes avec les labels
-  names(dtaf_tree_cand) <- c(
-    label_variable[names(dtaf_tree_cand)[names(dtaf_tree_cand) != input$cand]],
+  names(dtaf_loaded_tree_cand) <- c(
+    label_variable[names(dtaf_loaded_tree_cand)[names(dtaf_loaded_tree_cand) != input$cand]],
     input$cand)
   
-  res_cand <- rpart(as.formula(paste(input$cand, "~ .")),data = dtaf_tree_cand)
+  res_cand <- rpart(as.formula(paste(input$cand, "~ .")),data = dtaf_loaded_tree_cand)
   visTree(res_cand, main = paste0("Votes pour ", names(which(c(
     "Nathalie Arthaud" = "Arthaud_exp",
     "Fabrice Roussel" = "Roussel_exp",
