@@ -38,7 +38,6 @@ dtaf_base <- dtaf_loaded %>%
 theme_presidentielles <- bs_theme(
   version = 5,                
   bootswatch = "flatly",
-  
   bg = "white",             # gris très clair pour les fonds
   fg = "#1B1F3B",             # bleu nuit pour le texte principal
   primary = "#1B1F3B",        # bleu République

@@ -20,7 +20,7 @@ library(tidyverse)
 
 shinyServer(function(input, output, session) {
   output$image_fond_accueil <- renderPlot({
-    img <- readPNG(file.path("image_urne_fond.png"))
+    img <- readPNG(file.path("image_urne_fond_2.png"))
     
     # Plein écran
     op <- par(mar = c(0,0,0,0), xaxs = "i", yaxs = "i"); on.exit(par(op), add = TRUE)
