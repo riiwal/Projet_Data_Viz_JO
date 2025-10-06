@@ -73,7 +73,8 @@ output$heatmapcorr <- renderPlotly({
   rn <- rownames(cm); rn_lab <- label_variable[rn]; rn[!is.na(rn_lab)] <- rn_lab[!is.na(rn_lab)]; rownames(cm) <- rn
   cn <- colnames(cm); cn_lab <- label_candidat[cn]; cn[!is.na(cn_lab)] <- cn_lab[!is.na(cn_lab)]; colnames(cm) <- cn
   
-  rr <- rownames(cm); cc <- colnames(cm)
+  rr <- rownames(cm)
+  cc <- colnames(cm)
   txt <- outer(
     rr, cc,
     Vectorize(function(r, c) sprintf("Variable : %s<br>Candidat : %s<br>Corrélation : %.2f", r, c, cm[r, c]))
@@ -81,7 +82,7 @@ output$heatmapcorr <- renderPlotly({
   
   palette <- colorRampPalette(c("#2C7BB6","white","#D7191C"))(256)
   
-  p <- heatmaply(
+  heatmaply(
     cm,
     colors = palette,
     limits = c(-1, 1),
@@ -95,14 +96,5 @@ output$heatmapcorr <- renderPlotly({
     plot_method = "plotly",
     hide_colorbar = FALSE,
     custom_hovertext = txt
-  )
-  
-  p %>% layout(
-    title = list(
-      text = "Corrélations entre candidats et variables socio-éco",
-      x = 0.5, xanchor = "center",
-      y = 0.98, yanchor = "top"
-    ),
-    margin = list(t = 80)
   )
 })
