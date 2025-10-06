@@ -52,7 +52,7 @@ output$PCA_ind <- renderPlot({
   fviz_pca_ind(res.pca,
                geom.ind = "point",
                col.ind = dtaf$Gagnant,   # couleur = vainqueur
-               palette = "jco",
+               palette = c("#D7263D","#223A77","#F2C14E"),
                legend.title = "Vote majoritaire") +
     ggtitle("ACP - Individus colorés selon le vote majoritaire")
 })
