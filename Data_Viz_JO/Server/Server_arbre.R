@@ -10,7 +10,7 @@ library(shinyWidgets)
 
 # server/Server_arbre.R
 
-label_variable <- c(
+label_variable <- reactive({ c(
   Inscrit_22 = "Inscrits 2022",
   pop_légal_19 = "Population légale 2019",
   pop_pole_aav = "% pop. pôles AAV", pop_cour_aav = "% pop. couronnes AAV", pop_horsaav = "% pop. hors AAV",
@@ -27,10 +27,10 @@ label_variable <- c(
   acc_lycee = "% accès lycée", acc_medecin = "% accès médecin", acc_dentiste = "% accès dentiste", acc_pharmacie = "% accès pharmacie",
   tx_pauvrete60_diff = "Taux de pauvreté (60%)", nivvie_median_diff = "Niveau de vie médian",
   Gagnant = "Vote majoritaire"
-)
+)})
 
 # Sélection et renommage des colonnes
-dtaf_loaded_tree <- dtaf_loaded %>%
+tree_all <- reactive({dtaf_loaded_tree <- dtaf_loaded %>%
   select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,
          age_moyen,actemp,actcho,inactret,actdip_PEU,actdip_CAP,actdip_BAC,actdip_BAC2,actdip_BAC3,actdip_BAC5,
          actdip_BAC3P,act_agr,act_art,act_cad,act_int,act_emp,act_ouv,act_cho,men_seul,men_coupae,men_coupse,
@@ -40,20 +40,21 @@ dtaf_loaded_tree <- dtaf_loaded %>%
   st_drop_geometry()
 
 # Renommer les colonnes avec les labels
-names(dtaf_loaded_tree) <- label_variable[names(dtaf_loaded_tree)]
+names(dtaf_loaded_tree) <- label_variable()[names(dtaf_loaded_tree)]
+
+
+
 
 # Construire l’arbre
 res <- rpart(`Vote majoritaire` ~ ., data = dtaf_loaded_tree)
-
+visTree(res, main = "Vote", width = "100%", height = "100vh")
+})
 output$tree <- renderVisNetwork({
-  visTree(res, main = "Vote", width = "100%", height = "100vh")
+  tree_all()
 })
 
-
-output$tree_cand <- renderVisNetwork({
-  
-  #arbre candidat
-  dtaf_loaded_tree_cand <- dtaf_loaded %>%
+#arbre candidat
+tree_candidat <- reactive({dtaf_loaded_tree_cand <- dtaf_loaded %>%
     select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,
            age_moyen,actemp,actcho,inactret,actdip_PEU,actdip_CAP,actdip_BAC,actdip_BAC2,actdip_BAC3,actdip_BAC5,
            actdip_BAC3P,act_agr,act_art,act_cad,act_int,act_emp,act_ouv,act_cho,men_seul,men_coupae,men_coupse,
@@ -61,14 +62,18 @@ output$tree_cand <- renderVisNetwork({
            acc_ecole,acc_college,acc_lycee,acc_medecin,acc_dentiste,acc_pharmacie,tx_pauvrete60_diff,
            nivvie_median_diff, all_of(input$cand)) %>%
     st_drop_geometry()
-  
-  # Renommer les colonnes avec les labels
-  names(dtaf_loaded_tree_cand) <- c(
-    label_variable[names(dtaf_loaded_tree_cand)[names(dtaf_loaded_tree_cand) != input$cand]],
-    input$cand)
-  
-  res_cand <- rpart(as.formula(paste(input$cand, "~ .")),data = dtaf_loaded_tree_cand)
-  visTree(res_cand, main = paste0("Votes pour ", names(which(c(
+
+# Renommer les colonnes avec les labels
+names(dtaf_loaded_tree_cand) <- c(
+  label_variable()[names(dtaf_loaded_tree_cand)[names(dtaf_loaded_tree_cand) != input$cand]],# on renomme tout sauf la variable du candidat
+  input$cand)
+
+res_cand <- rpart(as.formula(paste(input$cand, "~ .")),data = dtaf_loaded_tree_cand)
+
+})
+
+output$tree_cand <- renderVisNetwork({
+  visTree(tree_candidat(), main = paste0("Votes pour ", names(which(c(
     "Nathalie Arthaud" = "Arthaud_exp",
     "Fabrice Roussel" = "Roussel_exp",
     "Emmanuel Macron" = "Macron_exp",
@@ -83,4 +88,3 @@ output$tree_cand <- renderVisNetwork({
     "Nicolas Dupont-Aignan" = "DupontAignan_exp"
   ) == input$cand))), width = "100%",height = "600px")
 })
-  # renommer variables + ajuster ecriture

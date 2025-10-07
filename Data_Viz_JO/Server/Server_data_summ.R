@@ -1,5 +1,5 @@
 
-dtaf_loaded_dt<- dtaf_loaded %>% # création d'un df  pour l'affichage de la table 
+dt <- reactive({ dtaf_loaded_dt<- dtaf_loaded %>% # création d'un df  pour l'affichage de la table 
 st_drop_geometry() %>% # on retire la geometry (carte)
   rename( # on renomme l'ensemble des variables pour donner des noms clairs
     "Code du département" = codeDepartement,
@@ -71,8 +71,10 @@ st_drop_geometry() %>% # on retire la geometry (carte)
     "Votes exprimés pour Poutou" = Poutou_exp,
     "Votes exprimés pour Dupont-Aignan" = DupontAignan_exp)
 
+DT::datatable(dtaf_loaded_dt,
+              options = list(pageLength = 10)) # affichage 10 lignes par défaut
+})
   # création de l'output de la table
   output$table <- renderDT({
-    DT::datatable(dtaf_loaded_dt,
-                  options = list(pageLength = 10)) # affichage 10 lignes par défaut
+    dt()
   })
