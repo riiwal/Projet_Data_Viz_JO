@@ -1,15 +1,14 @@
+# création d'un df pour l'acp avec les variables les mieux projetées
+
+dtaf_loaded %>% select("acc_lycee","act_ouv" ,"acc_college","pop_urb","locatai","proprio","actdip_BAC3",
+                       "actdip_BAC3P","actdip_CAP","act_cad","actdip_BAC5","men_coupse") %>%
+  st_drop_geometry()-> dtaf_loaded_acp
+
 # choix des variables les mieux projetées
 
 res.pca <- PCA(dtaf_loaded_acp, scale.unit = TRUE, graph = FALSE)
 # cos2_tot <- rowSums(res.pca$var$cos2[,1:2])
 # sort(cos2_tot, decreasing = TRUE)
-
-# création d'un df pour l'acp avec les variables les mieux projetées
-
-dtaf_loaded %>% select("acc_lycee","act_ouv" ,"acc_college","pop_urb","locatai","proprio","actdip_BAC3",
-                "actdip_BAC3P","actdip_CAP","act_cad","actdip_BAC5","men_coupse") %>%
-  st_drop_geometry()-> dtaf_loaded_acp
-
 
 # liste des variables de vote
 vars_vote <- c("Abs_insc","Vot_insc","Blanc_vote","Nul_vote",
