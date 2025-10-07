@@ -1,31 +1,7 @@
-library(shiny)
-library(DT)
-library(dplyr)
-# library(stargazer)
-# library(summarytools)
 
-
-  # création des thèmes pour l'affichage des variables sélectionnées dans le summary
-  # theme_vars <- list(
-  #   "Démographie" = c("Inscrit_22","pop_légal_19","pop_pole_aav","pop_cour_aav","pop_horsaav","pop_urb","pop_rur_periu","pop_rur_non_periu","age_moyen"),
-  #   "Activité" = c("actemp","actcho","inactret"),
-  #   "Education"=c("actdip_PEU","actdip_CAP","actdip_BAC","actdip_BAC2","actdip_BAC3","actdip_BAC5","actdip_BAC3P"),
-  #   "CSP"= c("act_agr","act_art","act_cad","act_int","act_emp","act_ouv","act_cho"),
-  #   "Menages" = c("men_seul","men_coupea","men_coupse","men_monop"),
-  #   "Logement" = c("proprio","locatai","mfuel"),
-  #   "Transport" = c("modtrans_aucun","modtrans_pied","modtrans_velo","modtrans_voit","modtrans_commun"),
-  #   "Accès" = c("acc_ecole","acc_college","acc_lycee","acc_medecin","acc_dentiste","acc_pharmacie"),
-  #   "Economie" = c("tx_pauvrete60_diff","nivvie_median_diff"),
-  #   "Votes" = c("Abs_insc","Vot_insc","Blanc_vote","Nul_vote","Arthaud_exp","Roussel_exp","Macron_exp","Lassalle_exp","LePen_exp","Zemmour_exp",
-  #               "Melenchon_exp","Hidalgo_exp","Jadot_exp","Pecresse_exp","Poutou_exp","DupontAignan_exp","Gagnant")
-  # )
-
-# dtaf_loaded_summ<- dtaf_loaded %>%
-#   st_drop_geometry() 
-
-dtaf_loaded_dt<- dtaf_loaded %>%
-st_drop_geometry() %>%
-  rename(
+dt <- reactive({ dtaf_loaded_dt<- dtaf_loaded %>% # création d'un df  pour l'affichage de la table 
+st_drop_geometry() %>% # on retire la geometry (carte)
+  rename( # on renomme l'ensemble des variables pour donner des noms clairs
     "Code du département" = codeDepartement,
     "Nom du département" = nomDepartement,
     "Code de la circonscription" = codeCirconscription,
@@ -93,31 +69,12 @@ st_drop_geometry() %>%
     "Votes exprimés pour Jadot" = Jadot_exp,
     "Votes exprimés pour Pécresse" = Pecresse_exp,
     "Votes exprimés pour Poutou" = Poutou_exp,
-    "Votes exprimés pour Dupont-Aignan" = DupontAignan_exp
-  )
+    "Votes exprimés pour Dupont-Aignan" = DupontAignan_exp)
 
-  # dtaf_loaded_summary <- dtaf_loaded %>%
-  #   st_drop_geometry()
-  # names(dtaf_loaded_summary) <- label_variable_df[names(dtaf_loaded_summary)]
-  # Table affichée
+DT::datatable(dtaf_loaded_dt,
+              options = list(pageLength = 10)) # affichage 10 lignes par défaut
+})
+  # création de l'output de la table
   output$table <- renderDT({
-    DT::datatable(dtaf_loaded_dt, options = list(pageLength = 10))
+    dt()
   })
-  
-  # Résumé des variables
-  # library(gtsummary)
-  # 
-  # output$summary <- renderUI({
-  #   dtaf_loaded_summ %>%
-  #     select(where(~ !is.character(.))) %>%   # enlève les colonnes de type caractère
-  #     tbl_summary(
-  #       statistic = all_continuous() ~ "Moy. : {mean} [min-max : {min} - {max}]",
-  #       digits = all_continuous() ~ 2)
-  # 
-  # 
-  #   # df <- as.data.frame(summary(dtaf_loaded_summ[, input$select_summary, drop = FALSE]))
-  #   # HTML(
-  #   #   stargazer(df, type = "html", summary = FALSE, title = "Résumé statistique")
-  #   # )
-  # })
-  
