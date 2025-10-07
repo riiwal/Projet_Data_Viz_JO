@@ -1,32 +1,15 @@
+# Page ACP
+
 tagList(
   fluidRow(
     column(
       6,
       card(class = "mycard",
-           card_header("Individus"), card_body(plotOutput("PCA_ind")))
+           card_header("Individus"), card_body(plotOutput("PCA_ind"))) # graphe des individus
     ),
     column(
       6,
       card(class = "mycard",
            card_header("Varibles"),
-           card_body(plotOutput("PCA_var")))
+           card_body(plotOutput("PCA_var"))) # graphe des variables
     )))
-#   
-#   navset_card_tab(
-#     nav_panel(
-#       title = "Graphe analyse en composantes principales",
-#       fluidRow(column(
-#         6,
-#         card(
-#             class = "plot-card",
-#             card_body()
-#       )),
-#         column(
-#         6,
-#         card(
-#           class = "plot-card",
-#           card_header("Varibles"),
-#           card_body(plotOutput("PCA_var"))
-#       ))))
-#   )
-# )

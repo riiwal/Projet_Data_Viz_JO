@@ -11,6 +11,7 @@ library(GGally)
 library(corrplot)
 library(RColorBrewer)
 library(ggthemes)
+library(FactoMineR)
 library(factoextra)
 library(patchwork)
 library(scales)
@@ -25,6 +26,8 @@ library(htmltools)
 library(visNetwork)
 library(heatmaply)
 library(png)
+library(DT)
+
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
 
