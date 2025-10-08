@@ -2,7 +2,7 @@ library(shiny)
 tagList(fluidPage(fluidRow(column(
   width = 12,
   offset = 1,
-  h1("Profil électoral et démographique par circonscription ", align = "center") #Titre du graphique
+  h4("Profil électoral et démographique par circonscription ", align = "center") #Titre du graphique
 )), fluidRow(
   column(
     3,

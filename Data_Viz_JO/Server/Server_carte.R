@@ -11,9 +11,13 @@ library(leaflet)
 library(leaflet.extras)
 library(htmltools)
 
+
+#Simplification de la géométrie 
+dtaf_loaded_simple <- st_simplify(dtaf_loaded, dTolerance = 0.001)
+
 # Préparation des données top3 --- 
 # Rotation du data set avec la circonscription, les candidats et le % de votes pour eux
-top3 <- dtaf_loaded[, c(3, 56:67)] %>% 
+top3 <- dtaf_loaded_simple [, c(3, 56:67)] %>% 
   pivot_longer(cols = 2:13,
                names_to = "candidat",
                values_to = "pourcentage")
@@ -47,36 +51,35 @@ labels_top3 <- top3 %>%
   summarise(top3_label = paste0(candidat, " : ", round(pourcentage, 1), "%", 
                                 collapse = "<br>"),
             .groups = "drop")
+# Joindre les données top3
+dtaf2 <- dtaf_loaded_simple %>%
+  left_join(st_drop_geometry(labels_top3), by = "codeCirconscription") %>%
+  mutate(label_base = paste0(
+    "<b>", nomDepartement, " - ", nomCirconscription, "</b><br>",
+    "<br><b>Top 3 :</b><br>", top3_label,
+    "<br><b>Abstention : </b>", round(Abs_insc, 2), "%"
+  ))
 
-# output de la carte ---
-output$mymap <- renderLeaflet({
+
+carte<-reactive({
   
-  # Joindre les données top3
-  dtaf2 <- dtaf_loaded %>%
-    left_join(st_drop_geometry(labels_top3), by = "codeCirconscription")
+  # Extraire la variable sélectionnée
+  valeurs <- dtaf2[[input$select]]
   
-  # Créer la palette selon la sélection
-  pal <- colorNumeric("Oranges", domain = dtaf2[[input$select]])
+  # Palette colorée
+  pal <- colorNumeric("Blues", domain = valeurs)
   
-  # Créer les labels HTML pour la carte
-  labels <- lapply(
-    paste0(
-      "<b>", dtaf2$nomDepartement, " - ", dtaf2$nomCirconscription, "</b><br>",
-      "<b>", names(dtaf2)[which(names(dtaf2) == input$select)], " : </b>",
-      round(dtaf2[[input$select]], 2), "%<br>",
-      ifelse(!is.na(dtaf2$top3_label), 
-             paste0("<br><b>Top 3 :</b><br>", dtaf2$top3_label), 
-             ""), "<br>", "<br>",
-      "<b>Abstention : </b>", round(dtaf2$Abs_insc, 2), "%<br>"
-    ),
-    HTML
-  )
+  # Labels HTML
+  labels <- paste0(
+    dtaf2$label_base,
+    "<br><b>", input$select, " : </b>", round(valeurs, 2), "%"
+  ) %>% lapply(HTML)
   
-  # Créer la carte Leaflet
-  leaflet(dtaf2, options = leafletOptions(maxZoom = 11, minZoom = 5, zoom=5)) %>% #Limite de zoom
+  # Carte Leaflet
+  leaflet(dtaf2, options = leafletOptions(maxZoom = 11, minZoom = 5, zoom=5)) %>%
     addTiles() %>%
     addPolygons(
-      fillColor = ~pal(dtaf2[[input$select]]), #coloration basé sur la variable choisie 
+      fillColor = ~pal(valeurs),
       fillOpacity = 0.7,
       color = "darkgray",
       weight = 1,
@@ -87,25 +90,29 @@ output$mymap <- renderLeaflet({
         fillOpacity = 0.9,
         bringToFront = TRUE
       ),
-      label = labels, #Ajout des labels HTML 
+      label = labels,
       labelOptions = labelOptions(
         style = list("font-weight" = "normal", padding = "3px 8px"),
         textsize = "13px",
         direction = "auto"
       )
     ) %>%
-    addLegend( #Ajout de la légende
-      pal = pal, 
-      values = ~dtaf2[[input$select]],
+    addLegend(
+      pal = pal,
+      values = valeurs,
       title = "Pourcentage (%)",
       position = "bottomright",
       opacity = 0.7
     ) %>%
-    setView(lng = 2.5, lat = 46.5, zoom = 6) %>% #Focus sur la France 
-    clearTiles() %>%  # Permet de ne pas avoir de fond de carte
-    setMaxBounds( lng1 = -5.142222,  
-                  lat1 = 41.333740,  
-                  lng2 = 9.560000,    
-                  lat2 = 51.089062) # Limite l'utilisateur à la France
- 
-     })
+    setView(lng = 2.5, lat = 46.5, zoom = 6) %>%
+    clearTiles() %>%
+    setMaxBounds(
+      lng1 = -5.142222,
+      lat1 = 41.333740,
+      lng2 = 9.560000,
+      lat2 = 51.089062
+    )
+})
+
+# output de la carte ---
+output$mymap <- renderLeaflet({carte()})
