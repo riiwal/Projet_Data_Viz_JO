@@ -1,32 +1,29 @@
 #packages utilisés ---
-library(readxl)
-library(dplyr)
-library(stringr)
-library(sf)
+library(readxl) # lecture de fichier 
+library(dplyr) # manipulation de données
+library(stringr) # manipulation de texte
+library(sf) # donnée géométriques
 library(shiny)
-library(bslib)
-library(ggplot2)
-library(tidyverse)
-library(GGally)
-library(corrplot)
-library(RColorBrewer)
-library(ggthemes)
-library(FactoMineR)
-library(factoextra)
-library(patchwork)
-library(scales)
-library(forcats)
-library("ggpubr")
-library("ggrepel")
-#library(ggiraph)
-library(plotly)
-library(leaflet)
-library(leaflet.extras)
-library(htmltools)
-library(visNetwork)
-library(heatmaply)
-library(png)
-library(DT)
+library(bslib) # theme shiny
+library(ggplot2) # graphiques
+library(tidyverse) # travail dans l'environnement tidyverse
+library(RColorBrewer) # palettes de couleurs
+library(ggthemes) # theme graphiques
+library(FactoMineR) # ACP
+library(factoextra) # graphiques ACP
+library(scales) # gradient
+library(leaflet) # carte
+library(leaflet.extras) # carte
+library(htmltools) # objet html pour la carte
+library(visNetwork) # arbre
+library(heatmaply) # heatmap
+library(png) # importation d'image
+library(DT) # datatable
+library(rpart) # arbre
+library(visNetwork) # arbre
+library(rpart.plot) # arbre
+#library(sparkline)
+#library(shinyWidgets)
 
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
