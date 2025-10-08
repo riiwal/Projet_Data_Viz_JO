@@ -1,5 +1,5 @@
 # page données
 
-tagList(fluidRow(DTOutput("table",height = 550)
-  )
+tagList(navset_card_tab(fluidRow(DTOutput("table",height = 550)
+  ))
 )
