@@ -78,7 +78,7 @@ output$cartegagnant <- renderPlot({
 })
 
 # Histogramme national pondéré par candidat
-output$histogrammeresultat <- renderPlot({
+histo_resultat <- reactive({
   
   # Label des candidats
   candidat <- c(
@@ -160,6 +160,8 @@ output$histogrammeresultat <- renderPlot({
   p
 })
 
+output$histogrammeresultat <- renderPlot({histo_resultat()
+})
 
 dtaf_histo <- st_drop_geometry(dtaf_base)
 
