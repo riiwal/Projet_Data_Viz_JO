@@ -74,7 +74,7 @@ output$heatmapcorr <- renderPlotly({
   )
   
   
-  #candidat <- intersect(ordre_candidat, colnames(cm))
+  candidat <- intersect(ordre_candidat, colnames(cm))
   cm <- cm[, candidat, drop = FALSE]
   
   # Réorganisation des lignes selon l'ordre défini dans label_variable
