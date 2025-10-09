@@ -21,8 +21,8 @@ tagList(fluidPage(fluidRow(column(
           "% d'Actifs en emploi" = "actemp",
           "% de Chômeurs" = "actcho",
           "% d'Inactifs retraités" = "inactret",
-          "% de Diplômé < CAP" = "actdip_PEU",
-          "% de CAP/BEP" = "actdip_CAP",
+          "% de Diplômés < CAP" = "actdip_PEU",
+          "% de Diplômés d'un CAP/BEP" = "actdip_CAP",
           "% de Diplomés du Baccalauréat" = "actdip_BAC",
           "% de Diplomés d'un Bac+2" = "actdip_BAC2",
           "% de Diplomés d'un Bac+3" = "actdip_BAC3",
@@ -35,8 +35,8 @@ tagList(fluidPage(fluidRow(column(
           "% de Cadres" = "act_cad",
           "% de Professions intermédiaires" = "act_int",
           "% d'Employés" = "act_emp",
-          "% d'Ouvriers" = "act_ouv",
-          "% de Chômeurs" = "act_cho"
+          "% d'Ouvriers" = "act_ouv"
+          
         ),
         "Logement" = list("% Propriétaires" = "proprio", "% Locataires" = "locatai"),
         "Ménages" = list(
