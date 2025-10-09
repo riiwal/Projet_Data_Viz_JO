@@ -22,8 +22,6 @@ library(DT) # datatable
 library(rpart) # arbre
 library(visNetwork) # arbre
 library(rpart.plot) # arbre
-#library(sparkline)
-#library(shinyWidgets)
 
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
