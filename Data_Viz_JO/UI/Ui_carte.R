@@ -24,10 +24,10 @@ tagList(fluidPage(fluidRow(column(
           "% d'Inactifs retraités" = "inactret",
           "% de Diplômé < CAP" = "actdip_PEU",
           "% de CAP/BEP" = "actdip_CAP",
-          "% de Diplomé du Baccalauréat" = "actdip_BAC",
-          "% de Diplomé d'un Bac+2" = "actdip_BAC2",
-          "% de Diplomé d'un Bac+3" = "actdip_BAC3",
-          "% de Diplomé d'un Bac+5" = "actdip_BAC5"
+          "% de Diplomés du Baccalauréat" = "actdip_BAC",
+          "% de Diplomés d'un Bac+2" = "actdip_BAC2",
+          "% de Diplomés d'un Bac+3" = "actdip_BAC3",
+          "% de Diplomés d'un Bac+5" = "actdip_BAC5"
           
         ),
         "Professions" = list(
