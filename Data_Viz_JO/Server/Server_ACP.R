@@ -25,16 +25,21 @@ fviz_pca_ind(res.pca,
              geom.ind = "point",
              col.ind = dtaf_loaded$Gagnant,  # individus colorés par "vainqueur"
              palette = c("#223A77","#F2C14E","#D7263D"), # couleur correspondant aux partis gagnants
-             legend.title = "Vote majoritaire") +
-  ggtitle("ACP - Individus colorés selon le vote majoritaire")})
+             legend.title = "Vote majoritaire",
+             title = "")+
+  theme(
+    legend.text = element_text(size = 14),      # taille du texte de la légende
+    legend.title = element_text(size = 16),     # taille du titre de la légende
+    axis.title = element_text(size = 16)       # taille du nom des axes
+  )})
 
-acp2 <- reactive({ dtaf_loaded_acp <- dtaf_loaded %>% select("acc_lycee","act_ouv" ,"acc_college","pop_urb","locatai","proprio","actdip_BAC3",
+acp2 <- reactive({ dtaf_loaded_acp2 <- dtaf_loaded %>% select("acc_lycee","act_ouv" ,"acc_college","pop_urb","locatai","proprio","actdip_BAC3",
                                           "actdip_BAC3P","actdip_CAP","act_cad","actdip_BAC5","men_coupse") %>%
     st_drop_geometry()
-  
+  names(dtaf_loaded_acp2) <- label_variable()[names(dtaf_loaded_acp2)]
   # choix des variables les mieux projetées
   
-  res.pca <- PCA(dtaf_loaded_acp, scale.unit = TRUE, graph = FALSE)
+  res.pca2 <- PCA(dtaf_loaded_acp2, scale.unit = TRUE, graph = FALSE)
   # cos2_tot <- rowSums(res.pca$var$cos2[,1:2])
   # sort(cos2_tot, decreasing = TRUE)
   
@@ -49,8 +54,11 @@ acp2 <- reactive({ dtaf_loaded_acp <- dtaf_loaded %>% select("acc_lycee","act_ou
                            "Poutou_exp",
                            "DupontAignan_exp") })
   
-  fviz_pca_var(res.pca,repel = TRUE) +
-    ggtitle("ACP - variables")
+  fviz_pca_var(res.pca2, repel = TRUE,      # évite le chevauchement des noms
+               labelsize = 5,title  = "")+
+    theme(legend.text = element_text(size = 14),      # taille du texte de la légende
+    legend.title = element_text(size = 16),     # taille du titre de la légende
+    axis.title = element_text(size = 16)) # taille du nom des axes
 })
 
 # création de l'output acp individus
