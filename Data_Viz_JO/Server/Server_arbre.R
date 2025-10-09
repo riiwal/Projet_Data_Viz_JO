@@ -1,14 +1,4 @@
-# essai arbre
-
-library(rpart)
-library(dplyr)
-library(visNetwork)
-library(rpart.plot)
-library(sparkline)
-library(shinyWidgets)
-
-
-# server/Server_arbre.R
+# Server arbre
 
 label_variable <- reactive({ c(
   Inscrit_22 = "Inscrits 2022",

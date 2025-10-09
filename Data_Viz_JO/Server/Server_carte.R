@@ -1,16 +1,3 @@
-library(sf)
-library(ggplot2)
-library(dplyr)
-library(tidyverse)
-library(RColorBrewer)
-library(ggpubr)
-library(ggrepel)
-library(ggiraph)
-library(plotly)
-library(leaflet)
-library(leaflet.extras)
-library(htmltools)
-
 
 #Simplification de la géométrie 
 dtaf_loaded_simple <- st_simplify(dtaf_loaded, dTolerance = 0.001)

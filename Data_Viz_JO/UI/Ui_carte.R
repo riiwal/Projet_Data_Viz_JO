@@ -1,4 +1,3 @@
-library(shiny)
 tagList(fluidPage(fluidRow(column(
   width = 12,
   offset = 1,

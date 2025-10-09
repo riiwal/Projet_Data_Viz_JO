@@ -24,7 +24,7 @@ vars_vote <- reactive({c("Abs_insc","Vot_insc","Blanc_vote","Nul_vote",
 fviz_pca_ind(res.pca,
              geom.ind = "point",
              col.ind = dtaf_loaded$Gagnant,  # individus colorés par "vainqueur"
-             palette = c("#D7263D","#223A77","#F2C14E"), # couleur correspondant aux partis gagnants
+             palette = c("#223A77","#F2C14E","#D7263D"), # couleur correspondant aux partis gagnants
              legend.title = "Vote majoritaire") +
   ggtitle("ACP - Individus colorés selon le vote majoritaire")})
 
