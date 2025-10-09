@@ -8,7 +8,7 @@ tagList(
 
       selectInput(
         inputId = "themes",
-        label   = "Thèmes socio-éco",
+        label   = "Choisissez un thème à afficher sur la heatmap : ",
         choices = c(
           "Démographie"                         = "demo",
           "Activité / emploi"                   = "activ",

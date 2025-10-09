@@ -1,8 +1,10 @@
 output$heatmapcorr <- renderPlotly({
   dtaf_heatmap <- st_drop_geometry(dtaf_base)
   
+  # Sélection des colonnes des candidats qui finissent par _exp
   candidat_colonne <- grep("_exp$", names(dtaf_heatmap), value = TRUE)
   
+  # Liste des thèmes socio
   theme_socio <- list(
     demo   = c("pop_pole_aav","pop_cour_aav","pop_horsaav","pop_urb","pop_rur_periu","pop_rur_non_periu"),
     activ  = c("actemp","actcho","inactret"),
@@ -15,12 +17,14 @@ output$heatmapcorr <- renderPlotly({
     acc    = c("acc_ecole","acc_college","acc_lycee","acc_medecin","acc_dentiste","acc_pharmacie")
   )
   
+  # Séléction du thème socio par l'utilisateur
   sel <- input$themes
   
- 
+ # Extraction des noms des variables
   socio_colonne <- unique(unlist(theme_socio[sel], use.names = FALSE))
   socio_colonne <- intersect(socio_colonne, names(dtaf_heatmap))
   
+  # Label des candidats
   label_candidat <- c(
     "Zemmour_exp"="Éric\nZemmour",
     "LePen_exp"="Marine\nLe Pen",
@@ -35,6 +39,8 @@ output$heatmapcorr <- renderPlotly({
     "Arthaud_exp"="Nathalie\nArthaud",
     "Lassalle_exp"="Jean\nLassalle"
   )
+  
+  # Les labels renommés
   label_variable <- c(
     pop_pole_aav="% pop. pôles AAV", pop_cour_aav="% pop. couronnes AAV", pop_horsaav="% pop. hors AAV",
     pop_urb="% pop. urbaine", pop_rur_periu="% pop. rurale périurbaine", pop_rur_non_periu="% pop. rurale non périurbaine",
@@ -51,6 +57,7 @@ output$heatmapcorr <- renderPlotly({
     acc_medecin="% accès médecin", acc_dentiste="% accès dentiste", acc_pharmacie="% accès pharmacie"
   )
   
+  # Calcul de la matrice de corrélation
   cm <- cor(
     as.matrix(dtaf_heatmap[, socio_colonne, drop = FALSE]),
     as.matrix(dtaf_heatmap[, candidat_colonne, drop = FALSE]),
@@ -58,21 +65,28 @@ output$heatmapcorr <- renderPlotly({
     method = "pearson"
   )
   
+  # Ordre des candidats
   ordre_candidat <- c(
-    "Zemmour_exp","LePen_exp","DupontAignan_exp","Pecresse_exp",
-    "Macron_exp","Jadot_exp","Hidalgo_exp","Roussel_exp",
-    "Melenchon_exp","Poutou_exp","Arthaud_exp","Lassalle_exp"
+    "Arthaud_exp", "Poutou_exp", "Melenchon_exp", "Roussel_exp","Lassalle_exp", 
+    "Hidalgo_exp","Jadot_exp",
+    "Macron_exp", "Pecresse_exp",
+    "DupontAignan_exp", "LePen_exp", "Zemmour_exp"
   )
+  
   
   candidat <- intersect(ordre_candidat, colnames(cm))
   cm <- cm[, candidat, drop = FALSE]
   
-  ordre_ligne <- order(apply(abs(cm), 1, max, na.rm = TRUE), decreasing = TRUE)
-  cm <- cm[ordre_ligne, , drop = FALSE]
+  # Réorganisation des lignes selon l'ordre défini dans label_variable
+  ordre_labels <- names(label_variable)
+  ordre_labels <- intersect(ordre_labels, rownames(cm))
+  cm <- cm[ordre_labels, , drop = FALSE]
   
-  rn <- rownames(cm); rn_lab <- label_variable[rn]; rn[!is.na(rn_lab)] <- rn_lab[!is.na(rn_lab)]; rownames(cm) <- rn
-  cn <- colnames(cm); cn_lab <- label_candidat[cn]; cn[!is.na(cn_lab)] <- cn_lab[!is.na(cn_lab)]; colnames(cm) <- cn
+  # Remplacer les noms par les labels
+  rownames(cm) <- label_variable[rownames(cm)]
+  colnames(cm) <- label_candidat[colnames(cm)]
   
+  # Matrice de texte à afficher au survol
   rr <- rownames(cm)
   cc <- colnames(cm)
   txt <- outer(
@@ -80,21 +94,25 @@ output$heatmapcorr <- renderPlotly({
     Vectorize(function(r, c) sprintf("Variable : %s<br>Candidat : %s<br>Corrélation : %.2f", r, c, cm[r, c]))
   )
   
+  # Palette
   palette <- colorRampPalette(c("#2C7BB6","white","#D7191C"))(256)
   
+  # Construction de la heatmap interactive
   heatmaply(
     cm,
     colors = palette,
     limits = c(-1, 1),
-    grid_color = "grey90",
-    grid_width = 0.3,
-    row_text_angle = 0,
-    column_text_angle = 45,
-    xlab = NULL, ylab = NULL,
     dendrogram = "none",
     Rowv = FALSE, Colv = FALSE, seriate = "none",
     plot_method = "plotly",
-    hide_colorbar = FALSE,
-    custom_hovertext = txt
+    custom_hovertext = txt,
+    fontsize_row = 14,             
+    fontsize_col = 14,             
+    colorbar = list(              
+      tickfont = list(size = 20),
+      title = list(text = "Corrélation", font = list(size = 16))
+    )
   )
+  
 })
+

@@ -108,10 +108,10 @@ histo_resultat <- reactive({
   # Calcul du nombre de suffrages exprimés par circonscription
   expr <- with(df, Inscrit_22 * (Vot_insc/100) * (1 - Blanc_vote/100 - Nul_vote/100))
   
-  # Votes par candidat 
+  # Suffrages exprimés
   votes <- colSums(pct_mat/100 * expr)
   
-  
+  # Mise en forme tidy
   pourcentage_candidat <- tibble(
     var   = names(votes),
     votes = as.numeric(votes)
@@ -139,6 +139,7 @@ histo_resultat <- reactive({
     "Nathalie\nArthaud"      = "#6E3E3B"
   )
   
+  # Barplot 
   p <- ggplot(pourcentage_candidat, aes(x = candidat, y = vote, fill = candidat)) +
     geom_col(width = 0.85) +
     geom_text(aes(label = percent(vote, accuracy = 0.01)),
@@ -163,8 +164,10 @@ histo_resultat <- reactive({
 output$histogrammeresultat <- renderPlot({histo_resultat()
 })
 
+# Enlever la géométrie au jeu de données
 dtaf_histo <- st_drop_geometry(dtaf_base)
 
+# fonction pour afficher tous les histogrammes 
 share_bar <- function(df,
                       cols,
                       label_map,                 
@@ -173,22 +176,26 @@ share_bar <- function(df,
                       x_text_size = 12) {
   
   
-  
+  # Poids de chaque circonscription
   poids <- df[[weight_col]]
+  
+  # Matrice des % 
   matrice_ponderee <- as.matrix(df[, cols, drop = FALSE])
  
+  # Part nationale pondéré par catégorie
   shares <- colSums(matrice_ponderee/100 * poids, na.rm = TRUE) / sum(poids, na.rm = TRUE)
   
+  # Passage en tibble 
   tb <- tibble(
     col   = names(shares),
     share = as.numeric(shares),
     label = unname(label_map[col])
   )
   
-  # Mettre en descendant
-  tb <- tb[order(tb$share, decreasing = TRUE), ]
+  # Figer l'ordre d'affichage 
   tb$label <- factor(tb$label, levels = tb$label)
   
+  # Histogramme
   ggplot(tb, aes(x = label, y = share, fill = label)) +
     geom_col(width = 0.70) +
     geom_text(aes(label = percent(share, accuracy = 0.1)),
@@ -207,6 +214,7 @@ share_bar <- function(df,
 }
 
 
+# Habitat : urbain / rural
 output$histogrammehabitat <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -220,6 +228,7 @@ output$histogrammehabitat <- renderPlot({
   )
 })
 
+# AAV : pôle, couronne, hors AAV
 output$histoAAV <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -233,6 +242,7 @@ output$histoAAV <- renderPlot({
   )
 })
 
+# Diplômes
 output$bar_diplomes <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -250,6 +260,7 @@ output$bar_diplomes <- renderPlot({
   )
 })
 
+# CSP
 output$bar_csp <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -268,6 +279,7 @@ output$bar_csp <- renderPlot({
   )
 })
 
+# Ménages
 output$bar_menages <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -282,6 +294,7 @@ output$bar_menages <- renderPlot({
   )
 })
 
+# Mobilités domicile-travail
 output$bar_mobilites <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -298,6 +311,7 @@ output$bar_mobilites <- renderPlot({
   )
 })
 
+#Logement
 output$bar_logement <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -310,6 +324,7 @@ output$bar_logement <- renderPlot({
   )
 })
 
+# Accès à l'éducation
 output$bar_acc_education <- renderPlot({
   share_bar(
     df = dtaf_histo,
@@ -323,6 +338,7 @@ output$bar_acc_education <- renderPlot({
   )
 })
 
+# Accès aux soins
 output$bar_acc_soins <- renderPlot({
   share_bar(
     df = dtaf_histo,

@@ -1,24 +1,23 @@
 tagList(
   navset_card_tab(
-    nav_panel(title = "Arbre gagnant",
+    nav_panel(title = "Arbre gagnant", # onglet 1
               fluidRow(
                 column(
                   12,
                   card(
-                    visNetworkOutput("tree")
+                    visNetworkOutput("tree") # visu arbre gagnant
                   )
                 )
               )),
     nav_panel(
-      title = "Arbre par candidat",
+      title = "Arbre par candidat", # onglet 2
       fluidRow(
         column(
           4,
-          selectInput(
+          selectInput( # menu déroulant
             inputId = "cand",
             label = "Choisissez le candidat :",
-            choices = c(
-              "Nathalie Arthaud" = "Arthaud_exp",
+            choices = c("Nathalie Arthaud" = "Arthaud_exp",
               "Fabrice Roussel" = "Roussel_exp",
               "Emmanuel Macron" = "Macron_exp",
               "Jean Lassalle" = "Lassalle_exp",
@@ -29,15 +28,14 @@ tagList(
               "Yannick Jadot" = "Jadot_exp",
               "Valérie Pécresse" = "Pecresse_exp",
               "Philippe Poutou" = "Poutou_exp",
-              "Nicolas Dupont-Aignan" = "DupontAignan_exp"
-            ),
-            selected = "Macron_exp"
+              "Nicolas Dupont-Aignan" = "DupontAignan_exp"),
+            selected = "Macron_exp" # choix par défaut
           )
         ),
         column(
           8,
           card(
-            visNetworkOutput("tree_cand")
+            visNetworkOutput("tree_cand") # viu abre candidat
           )
         )
       )

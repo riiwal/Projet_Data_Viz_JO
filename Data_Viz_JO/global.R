@@ -26,29 +26,28 @@ library(rpart.plot) # arbre
 
 dtaf_loaded <- readRDS("data/dtaf.RDS")
 
-# Base géo UNIQUE et propre (circonscriptions)
+# Base géo 
 dtaf_base <- dtaf_loaded %>%
   st_make_valid() %>%
   st_transform(2154) %>%
   mutate(codeCirconscription = as.character(codeCirconscription))
 
-
+# Thème de l'application
 theme_presidentielles <- bs_theme(
   version = 5,                
-  bootswatch = "flatly",
-  bg = "white",             # gris très clair pour les fonds
-  fg = "#1B1F3B",             # bleu nuit pour le texte principal
-  primary = "#1B1F3B",        # bleu République
-  secondary = "#EF4135",      # rouge République
-  info = "#1B1F3B",           # bleu plus vif pour éléments interactifs
-  success = "#EF4135",        # vert clair pour indicateurs positifs
-  warning = "#F1C40F",        # jaune doré
-  danger = "#E74C3C",         # rouge plus doux pour alertes
-  
+  bootswatch = "flatly",    # Base visuelle 
+  bg = "white",             # Couleur de fond globale de l'app
+  fg = "#1B1F3B",           # texte principal
+  primary = "#1B1F3B",      # couleur primaire
+  secondary = "#EF4135",    # couleur secondaire
+  info = "#1B1F3B",         # éléments interactifs
+  success = "#EF4135",      
+  warning = "#F1C40F",        
+  danger = "#E74C3C",       
   border_radius = "0.5rem",   # coins légèrement arrondis
-  "navbar-bg" = "#0B3D91",    # bleu foncé républicain pour la barre du haut
-  "navbar-fg" = "white",
-  "navbar-brand-color" = "white",
-  "navbar-light-color" = "white",
-  "navbar-light-hover-color" = "#FCC780" # accent doré au survol
+  "navbar-bg" = "#0B3D91",    # fond de la navbar
+  "navbar-fg" = "white",      # couleur du texte de la navbar
+  "navbar-brand-color" = "white", # Couleur du titre
+  "navbar-light-color" = "white", # couleur des liens
+  "navbar-light-hover-color" = "#FCC780" #survol
   )
