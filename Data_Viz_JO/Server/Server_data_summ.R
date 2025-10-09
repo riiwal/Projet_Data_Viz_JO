@@ -71,7 +71,7 @@ st_drop_geometry() %>% # on retire la geometry (carte)
     "Votes exprimés pour Poutou" = Poutou_exp,
     "Votes exprimés pour Dupont-Aignan" = DupontAignan_exp)
 
-DT::datatable(dtaf_loaded_dt,
+DT::datatable(dtaf_loaded_dt, # affichage d'un datatable
               options = list(pageLength = 10)) # affichage 10 lignes par défaut
 })
   # création de l'output de la table

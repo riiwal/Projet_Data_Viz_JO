@@ -1,5 +1,7 @@
 # page données
-
-tagList(navset_card_tab(fluidRow(DTOutput("table",height = 550)
+tagList(navset_card_tab( # pour englober le DF
+  fluidRow(
+    DTOutput("table", # sortie
+             height = 550) # hauteur
   ))
 )
