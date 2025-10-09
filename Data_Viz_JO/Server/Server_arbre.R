@@ -33,7 +33,9 @@ names(dtaf_loaded_tree) <- label_variable()[names(dtaf_loaded_tree)]
 res <- rpart(`Vote majoritaire` ~ .,
              data = dtaf_loaded_tree)
 visTree(res, main = "Vote majoritaire dans la circonscription", # titre
-        width = "100%", height = "100vh") # taille de la visu
+        width = "100%", height = "100vh")%>%  # taille de la visu                 
+  visHierarchicalLayout( nodeSpacing = 150) # ecartement pour enlever les chevauchements
+
 })
 
 # création de l'output
@@ -80,5 +82,7 @@ output$tree_cand <- renderVisNetwork({
             "Valérie Pécresse" = "Pecresse_exp",
             "Philippe Poutou" = "Poutou_exp",
             "Nicolas Dupont-Aignan" = "DupontAignan_exp") == input$cand))),
-          width = "100%",height = "600px") # taille de la visu
+          width = "100%",height = "600px")%>%  # taille de la visu                 
+    visHierarchicalLayout( nodeSpacing = 150) # ecartement pour enlever les chevauchements
+  
 })
