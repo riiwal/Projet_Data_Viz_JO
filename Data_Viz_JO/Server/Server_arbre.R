@@ -16,11 +16,6 @@ label_variable <- reactive({ c(Inscrit_22 = "Inscrits 2022",pop_légal_19 = "Pop
   tx_pauvrete60_diff = "Taux de pauvreté (60%)", nivvie_median_diff = "Niveau de vie médian", Gagnant = "Vote majoritaire"
 )})
 
-palette_partis <- reactive({c(
-  "Emmanuel Macron" = "#F7B733",
-  "Marine Le Pen" = "#E34A33",
-  "Jean-Luc Mélenchon" = "#9E9AC8"
-)})
 # Sélection des variables socio-démo + Gagnant
 tree_all <- reactive({dtaf_loaded_tree <- dtaf_loaded %>%
   select(Inscrit_22,pop_légal_19,pop_pole_aav,pop_cour_aav,pop_horsaav,pop_urb,pop_rur_periu,pop_rur_non_periu,
@@ -37,11 +32,10 @@ names(dtaf_loaded_tree) <- label_variable()[names(dtaf_loaded_tree)]
 # arbre
 res <- rpart(`Vote majoritaire` ~ .,
              data = dtaf_loaded_tree)
-g <- visTree(res, main = "Vote majoritaire dans la circonscription", # titre
+visTree(res, main = "Vote majoritaire dans la circonscription", # titre
         width = "100%", height = "100vh")%>%  # taille de la visu                 
   visHierarchicalLayout( nodeSpacing = 150) # ecartement pour enlever les chevauchements
-g$x$nodes$color.background <- palette_partis()[g$x$nodes$label]
-g
+
 })
 
 # création de l'output
