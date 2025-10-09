@@ -13,7 +13,7 @@ tagList(
       title = "Arbre par candidat", # onglet 2
       fluidRow(
         column(
-          4,
+          2,
           selectInput( # menu déroulant
             inputId = "cand",
             label = "Choisissez le candidat :",
@@ -33,7 +33,7 @@ tagList(
           )
         ),
         column(
-          8,
+          10,
           card(
             visNetworkOutput("tree_cand") # viu abre candidat
           )
